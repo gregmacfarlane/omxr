@@ -1,15 +1,22 @@
-#Function to write a lookup vector to an OMX file
-#------------------------------------------------
-#This function writes a lookup vector to the file. It allows the user to specify if the lookup vector applies only to rows or columns (in case the matrix is not square and/or the rows and columns don't have the same meanings.
-#Arguments:
-#file = full path name of the OMX file to store the lookup vector in
-#lookup_v = lookup vector object to be stored
-#name = name under which the lookup vector will be saved in the OMX file
-#lookup_dim = matrix dimension that the lookup vector is associated with
-#Values can be "row", "col", or NULL. A lookup dimension attribute is optional.
-#Description = string that describes the matrix
-#Return: TRUE
-writeLookupOMX <- function( file, lookup_v, name, lookup_dim=NULL, replace=FALSE, Description="" ) {
+#' Function to write a lookup vector to an OMX file
+#'
+#' This function writes a lookup vector to the file. It allows the user to
+#' specify if the lookup vector applies only to rows or columns (in case the
+#' matrix is not square and/or the rows and columns don't have the same
+#' meanings.
+#'
+#' @param file Full path name of the OMX file to store the lookup.
+#' @param lookup_v Vector containing the lookup information.
+#' @param name Name for the lookup vector in \code{file}.
+#' @param lookup_dim Matrix dimension that the lookup vector is associated with
+#'   Values can be "row", "col", or NULL, meaning that the lookup is
+#'   two-dimensional. Defaults to \code{NULL}.
+#' @param replace Overwrite the existing lookup (if any)? Defaults to \code{FALSE}.
+#' @param description
+#'
+#' @export
+#' @import rhdf5
+write_lookup <- function( file, lookup_v, name, lookup_dim=NULL, replace=FALSE, Description="" ) {
   #Check whether there is lookup of that name already in the file
   Contents = h5ls( file )
   LookupNames <- Contents$name[ Contents$group == "/lookup" ]
