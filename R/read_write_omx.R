@@ -158,37 +158,37 @@ write_omx <- function(file, matrix, name,
 #RowIndex = Vector containing numerical indices of the rows to be read.
 #ColIndex = Vector containing numerical indices of the columns to be read
 #Return: a matrix
-readMatrixOMX <- function( OMXFileName, MatrixName, RowIndex=NULL, ColIndex=NULL ) {
+read_omx <- function(file, name, row_index = NULL, col_index = NULL){
   #Get the matrix dimensions specified in the file
-  RootAttr <- getRootAttrOMX( OMXFileName )
+  RootAttr <- getRootAttrOMX( file )
   Shape <- RootAttr$SHAPE
   #Identify the item to be read
-  ItemName <- paste( "data", MatrixName, sep="/" )
-  #Check that RowIndex is proper
-  if( !is.null( RowIndex ) ) {
-    if( any( RowIndex <= 0 ) | ( max( RowIndex ) > Shape[1] ) ){
-      stop( "One or more values of 'RowIndex' are outside the index range of the matrix." )
+  ItemName <- paste( "data", name, sep="/" )
+  #Check that row_index is proper
+  if( !is.null( row_index ) ) {
+    if( any( row_index <= 0 ) | ( max( row_index ) > Shape[1] ) ){
+      stop( "One or more values of 'row_index' are outside the index range of the matrix." )
     }
-    if( any( duplicated( RowIndex ) ) ){
-      stop( "Duplicated index values in 'RowIndex'. Not permitted." )
+    if( any( duplicated( row_index ) ) ){
+      stop( "Duplicated index values in 'row_index'. Not permitted." )
     }
   }
-  #Check that ColIndex is proper
-  if( !is.null( ColIndex ) ) {
-    if( any( ColIndex <= 0 ) | ( max( ColIndex ) > Shape[2] ) ){
-      stop( "One or more values of 'ColIndex' are outside the index range of the matrix." )
+  #Check that col_index is proper
+  if( !is.null( col_index ) ) {
+    if( any( col_index <= 0 ) | ( max( col_index ) > Shape[2] ) ){
+      stop( "One or more values of 'col_index' are outside the index range of the matrix." )
     }
-    if( any( duplicated( ColIndex ) ) ){
-      stop( "Duplicated index values in 'ColIndex'. Not permitted." )
+    if( any( duplicated( col_index ) ) ){
+      stop( "Duplicated index values in 'col_index'. Not permitted." )
     }
   }
   #Combine the row and column indexes into a list
   #Indexes are reversed since matrix is stored in transposed form
-  Indices <- list( ColIndex, RowIndex )
+  Indices <- list( col_index, row_index )
   #Read the indexed positions of the matrix
-  Result <- t( h5read( OMXFileName, ItemName, index=list(ColIndex,RowIndex) ) )
+  Result <- t( h5read( file, ItemName, index=list(col_index,row_index) ) )
   #Replace the NA values with NA
-  NAValue = as.vector( attr( h5read( OMXFileName, ItemName, read.attribute=T ), "NA" ) )
+  NAValue = as.vector( attr( h5read( file, ItemName, read.attribute=T ), "NA" ) )
   if(!is.null(NAValue)) {
     Result[ Result == NAValue ] <- NA
   }
