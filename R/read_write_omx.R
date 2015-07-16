@@ -54,14 +54,14 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' @param description (Optional) description of matrix contents.
 #'
 #' @export
-#' @import rhdf
+#' @import rhdf5
 write_omx <- function(file, matrix, name,
                       row_index = NULL, col_index = NULL,
                       na_value = -1, replace = FALSE,
                       description = "") {
 
   #Get names of matrices in the file and check if exists
-  Contents <- rhdf::h5ls(file)
+  Contents <- rhdf5::h5ls(file)
   MatrixNames <- Contents$name[ Contents$group == "/data" ]
 
   if(name %in% MatrixNames & replace == FALSE ){
@@ -94,18 +94,18 @@ write_omx <- function(file, matrix, name,
 
     #Write matrix to file
     ItemName <- paste( "data", name, sep="/" )
-    rhdf::h5write( Matrix, file, ItemName )
+    rhdf5::h5write( Matrix, file, ItemName )
 
     #Add the NA storage value and matrix descriptions as attributes to the matrix
-    H5File <- rhdf::H5Fopen( file )
-    H5Group <- rhdf::H5Gopen( H5File, "data" )
-    H5Data <- rhdf::H5Dopen( H5Group, name )
+    H5File <- rhdf5::H5Fopen( file )
+    H5Group <- rhdf5::H5Gopen( H5File, "data" )
+    H5Data <- rhdf5::H5Dopen( H5Group, name )
     h5writeAttribute(na_value, H5Data, "NA" )
     h5writeAttribute(description, H5Data, "Description" )
 
     #Close everything up before exiting
-    rhdf::H5Dclose( H5Data )
-    rhdf::H5Gclose( H5Group )
+    rhdf5::H5Dclose( H5Data )
+    rhdf5::H5Gclose( H5Group )
     hrdf::H5Fclose( H5File )
 
   } else {
@@ -142,7 +142,7 @@ write_omx <- function(file, matrix, name,
 
     # Write the matrix to the indexed positions
     ItemName <- paste( "data", name, sep="/" )
-    rhdf::h5write(matrix, file, ItemName, index=Indices )
+    rhdf5::h5write(matrix, file, ItemName, index=Indices )
 
   }
 }
