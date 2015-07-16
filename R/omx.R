@@ -9,8 +9,6 @@
 #Transposes matrix when writing it to file to be in row major order like C/Python
 ################################################################################
 
-#Load the rhdf5 library
-library( rhdf5 )
 
 #Function to create an OMX file that is ready for writing data
 #-------------------------------------------------------------
@@ -39,7 +37,7 @@ createFileOMX <- function( Filename, Numrows, Numcols, Level=1 ) {
 #This function reads the SHAPE and VERSION attributes of an OMX file. This is called by several other functions
 #Arguments:
 #OMXFileName = full path name of the OMX file being read
-#Return: List containing the SHAPE  and VERSION attributes. 
+#Return: List containing the SHAPE  and VERSION attributes.
 #SHAPE component is a vector of number of rows and columns
 #VERSION component is the version number
 getRootAttrOMX <- function( OMXFileName ) {
@@ -70,7 +68,7 @@ getRootAttrOMX <- function( OMXFileName ) {
 #Function returns TRUE if completed successfully
 #Return: TRUE
 
-writeMatrixOMX <- function( OMXFileName, Matrix, MatrixSaveName, RowIndex=NULL, ColIndex=NULL, NaValue=-1 , 
+writeMatrixOMX <- function( OMXFileName, Matrix, MatrixSaveName, RowIndex=NULL, ColIndex=NULL, NaValue=-1 ,
                             Replace=FALSE, Description="" ) {
   #Get names of matrices in the file vc
 	Contents <- h5ls( OMXFileName )
@@ -222,7 +220,7 @@ writeLookupOMX <- function( OMXFileName, LookupVector, LookupSaveName, LookupDim
 #Rows - number of rows in the matrix
 #Columns - number of columns in the matrix
 #Matrices - a dataframe identifying the matrices and all their attributes
-#Lookups - a dataframe identifying the lookups and all their attributes 
+#Lookups - a dataframe identifying the lookups and all their attributes
 listOMX <- function( OMXFileName ) {
   #Get the version and shape information
 	RootAttr <- getRootAttrOMX( OMXFileName )
@@ -258,7 +256,7 @@ listOMX <- function( OMXFileName ) {
   H5Gclose( H5Group )
   H5Fclose( H5File )
   MatAttr <- do.call( rbind, lapply( MatAttr, function(x) data.frame(x) ) )
-  rm( Names, Types )        
+  rm( Names, Types )
   #Read the lookup attribute information
   H5File <- H5Fopen( OMXFileName )
   H5Group <- H5Gopen( H5File, "lookup" )
@@ -288,7 +286,7 @@ listOMX <- function( OMXFileName ) {
   }
   H5Gclose( H5Group )
   H5Fclose( H5File )
-  LookupAttr <- do.call( rbind, lapply( LookupAttr, function(x) data.frame(x) ) )    
+  LookupAttr <- do.call( rbind, lapply( LookupAttr, function(x) data.frame(x) ) )
   rm( Names, Types )
   #Combine the results into a list
   if(length(MatAttr)>0) {
@@ -301,14 +299,14 @@ listOMX <- function( OMXFileName ) {
 }
 
 #Function to read an OMX matrix
-#------------------------------     
+#------------------------------
 #This function reads an entire matrix in an OMX file or portions of a matrix using indexing.
 #Arguments:
 #OMXFileName = Path name of the OMX file where the matrix resides.
 #MatrixName = Name of the matrix in the OMX file
 #RowIndex = Vector containing numerical indices of the rows to be read.
 #ColIndex = Vector containing numerical indices of the columns to be read
-#Return: a matrix 
+#Return: a matrix
 readMatrixOMX <- function( OMXFileName, MatrixName, RowIndex=NULL, ColIndex=NULL ) {
 	#Get the matrix dimensions specified in the file
 	RootAttr <- getRootAttrOMX( OMXFileName )
@@ -342,13 +340,13 @@ readMatrixOMX <- function( OMXFileName, MatrixName, RowIndex=NULL, ColIndex=NULL
   NAValue = as.vector( attr( h5read( OMXFileName, ItemName, read.attribute=T ), "NA" ) )
   if(!is.null(NAValue)) {
     Result[ Result == NAValue ] <- NA
-  } 
+  }
   #Return the result
   Result
 }
 
 #Function to read an OMX lookup
-#------------------------------     
+#------------------------------
 #This function reads a lookup and its attributes.
 #Arguments:
 #OMXFileName = Path name of the OMX file where the lookup resides.
@@ -440,10 +438,10 @@ readSelectedOMX <- function( OMXFileName, MatrixName, RowSelection=NULL, ColSele
   #Label the rows and columns
   if( !is.null( RowLabels ) ) {
     rownames( Result ) <- readLookupOMX( OMXFileName, RowLabels )[[1]][ RowIndex ]
-  }                
+  }
   if( !is.null( ColLabels ) ) {
     colnames( Result ) <- readLookupOMX( OMXFileName, ColLabels )[[1]][ ColIndex ]
   }
   #Return the matrix
-  Result                
-}  
+  Result
+}
