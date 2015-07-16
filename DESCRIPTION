@@ -1,10 +1,12 @@
 Package: omxr
 Type: Package
 Title: Read and Write Open Matrix Files
-Version: 0.1
+Version: 0.1.0
 Date: 2015-07-15
 Author: Ben Stabler, Brian Gregor
-Maintainer: Greg Macfarlane
-Description: Look at OMX website.
-License: GPL
+Maintainer: Greg Macfarlane <gregmacfarlane@gmail.com>
+Description: The Open Matrix eXchange (OMX) file type is an open specification
+  for sharing data from transportation models. The specification is built on HDF5;
+  APIs to read and write are available for Cube, Emme, Python, and R.
+License: Apache
 LazyData: TRUE
