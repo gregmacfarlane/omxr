@@ -164,39 +164,45 @@ write_omx <- function(file, matrix, name,
 #' @export
 #' @import rhdf5
 read_omx <- function(file, name, row_index = NULL, col_index = NULL){
+
   #Get the matrix dimensions specified in the file
   RootAttr <- getRootAttrOMX( file )
   Shape <- RootAttr$SHAPE
+
   #Identify the item to be read
   ItemName <- paste( "data", name, sep="/" )
-  #Check that row_index is proper
-  if( !is.null( row_index ) ) {
-    if( any( row_index <= 0 ) | ( max( row_index ) > Shape[1] ) ){
-      stop( "One or more values of 'row_index' are outside the index range of the matrix." )
+
+  #Check that indices are properly formatted
+  Indices <- list(row_index, col_index)
+  dim <- 1   # initialize dimension
+  for(index in Indices){
+
+    if(!is.null(index)) {
+      if(any(index <= 0) | (max(index) > Shape[dim])){
+        stop(paste("One or more values in dimension", dim, "are invalid."))
+      }
+
+      if(any(duplicated(index))){
+        stop("Duplicated index values in dimension", dim, ".")
+      }
     }
-    if( any( duplicated( row_index ) ) ){
-      stop( "Duplicated index values in 'row_index'. Not permitted." )
-    }
+
+    # change dimension from 1 to 2
+    dim <- dim + 1
   }
-  #Check that col_index is proper
-  if( !is.null( col_index ) ) {
-    if( any( col_index <= 0 ) | ( max( col_index ) > Shape[2] ) ){
-      stop( "One or more values of 'col_index' are outside the index range of the matrix." )
-    }
-    if( any( duplicated( col_index ) ) ){
-      stop( "Duplicated index values in 'col_index'. Not permitted." )
-    }
-  }
-  #Combine the row and column indexes into a list
-  #Indexes are reversed since matrix is stored in transposed form
-  Indices <- list( col_index, row_index )
+
+
   #Read the indexed positions of the matrix
-  Result <- t( h5read( file, ItemName, index=list(col_index,row_index) ) )
+  Result <- t(rhdf5::h5read(file, ItemName, index = rev(Indices)))
+
   #Replace the NA values with NA
-  NAValue = as.vector( attr( h5read( file, ItemName, read.attribute=T ), "NA" ) )
+  NAValue = as.vector(
+    attr(rhdf5::h5read(file, ItemName, read.attribute=T),  "NA")
+  )
+
   if(!is.null(NAValue)) {
-    Result[ Result == NAValue ] <- NA
+    Result[Result == NAValue] <- NA
   }
-  #Return the result
+
   Result
 }
