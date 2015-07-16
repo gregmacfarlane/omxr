@@ -17,17 +17,17 @@
 create_omx <- function(file, numrows, numcols, level = 1){
 
   # if file already exists, delete it
-  if(file.exists(Filename)){
-    file.remove(Filename)
+  if(file.exists(file)){
+    file.remove(file)
   }
 
   # create hdf5 file with appropriate shape and attributes
   Shape <- c(numrows, numcols)
-  H5File <- rhdf5::H5Fcreate(filename)
+  H5File <- rhdf5::H5Fcreate(file)
   rhdf5::h5writeAttribute(0.2, H5File, "OMX_VERSION")
   rhdf5::h5writeAttribute(Shape, H5File, "SHAPE")
-  rhdf5::h5createGroup(Filename,"data")
-  rhdf5::h5createGroup(Filename,"lookup")
+  rhdf5::h5createGroup(file,"data")
+  rhdf5::h5createGroup(file,"lookup")
   rhdf5::H5Fclose( H5File )
 
 }
