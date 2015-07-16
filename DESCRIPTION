@@ -6,5 +6,5 @@ Date: 2015-07-15
 Author: Ben Stabler, Brian Gregor
 Maintainer: Greg Macfarlane
 Description: Look at OMX website.
-License: GPL
+License: Apache
 LazyData: TRUE
