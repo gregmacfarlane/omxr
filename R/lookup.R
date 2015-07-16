@@ -2,59 +2,59 @@
 #------------------------------------------------
 #This function writes a lookup vector to the file. It allows the user to specify if the lookup vector applies only to rows or columns (in case the matrix is not square and/or the rows and columns don't have the same meanings.
 #Arguments:
-#OMXFileName = full path name of the OMX file to store the lookup vector in
-#LookupVector = lookup vector object to be stored
-#LookupSaveName = name under which the lookup vector will be saved in the OMX file
-#LookupDim = matrix dimension that the lookup vector is associated with
+#file = full path name of the OMX file to store the lookup vector in
+#lookup_v = lookup vector object to be stored
+#name = name under which the lookup vector will be saved in the OMX file
+#lookup_dim = matrix dimension that the lookup vector is associated with
 #Values can be "row", "col", or NULL. A lookup dimension attribute is optional.
 #Description = string that describes the matrix
 #Return: TRUE
-writeLookupOMX <- function( OMXFileName, LookupVector, LookupSaveName, LookupDim=NULL, Replace=FALSE, Description="" ) {
+writeLookupOMX <- function( file, lookup_v, name, lookup_dim=NULL, replace=FALSE, Description="" ) {
   #Check whether there is lookup of that name already in the file
-  Contents = h5ls( OMXFileName )
+  Contents = h5ls( file )
   LookupNames <- Contents$name[ Contents$group == "/lookup" ]
-  if( ( LookupSaveName %in% LookupNames ) & ( Replace == FALSE ) ){
-    stop( paste("A lookup named '", LookupSaveName, "' already exists. 'Replace' must be TRUE in order to overwrite.", sep="") )
+  if( ( name %in% LookupNames ) & ( replace == FALSE ) ){
+    stop( paste("A lookup named '", name, "' already exists. 'replace' must be TRUE in order to overwrite.", sep="") )
   }
   #Error check lookup dimension arguments
-  if( !is.null( LookupDim ) ){
-    if( !( LookupDim %in% c( "row", "col" ) ) ) {
-      stop( "LookupDim argument must be 'row', 'col', or NULL." )
+  if( !is.null( lookup_dim ) ){
+    if( !( lookup_dim %in% c( "row", "col" ) ) ) {
+      stop( "lookup_dim argument must be 'row', 'col', or NULL." )
     }
   }
-  Len <- length( LookupVector )
-  RootAttr <- getRootAttrOMX( OMXFileName )
+  Len <- length( lookup_v )
+  RootAttr <- getRootAttrOMX( file )
   Shape <- RootAttr$SHAPE
-  if( is.null( LookupDim ) ) {
+  if( is.null( lookup_dim ) ) {
     if( Shape[1] != Shape[2] ) {
-      stop( "Matrix is not square. You must specify the 'LookupDim'" )
+      stop( "Matrix is not square. You must specify the 'lookup_dim'" )
     }
     if( Len != Shape[1] ) {
-      stop( paste( OMXFileName, " has ", Shape[1], " rows and columns. LookupVector has ", Len, " positions.", sep="" ) )
+      stop( paste( file, " has ", Shape[1], " rows and columns. lookup_v has ", Len, " positions.", sep="" ) )
     }
   }
-  if( !is.null( LookupDim ) ){
-    if( LookupDim == "row" ){
+  if( !is.null( lookup_dim ) ){
+    if( lookup_dim == "row" ){
       if( Len != Shape[1] ){
-        stop( paste( "Length of 'LookupVector' does not match row dimension of", OMXFileName ) )
+        stop( paste( "Length of 'lookup_v' does not match row dimension of", file ) )
       }
     }
-    if( LookupDim == "col" ){
+    if( lookup_dim == "col" ){
       if( Len != Shape[2] ){
-        stop( paste( "Length of 'LookupVector' does not match column dimension of", OMXFileName ) )
+        stop( paste( "Length of 'lookup_v' does not match column dimension of", file ) )
       }
     }
   }
   #Write lookup vector to file
-  ItemName <- paste( "lookup", LookupSaveName, sep="/" )
-  h5write( LookupVector, OMXFileName, ItemName )
+  ItemName <- paste( "lookup", name, sep="/" )
+  h5write( lookup_v, file, ItemName )
   #Write attributes
-  H5File <- H5Fopen( OMXFileName )
+  H5File <- H5Fopen( file )
   H5Group <- H5Gopen( H5File, "lookup" )
-  H5Data <- H5Dopen( H5Group, LookupSaveName )
+  H5Data <- H5Dopen( H5Group, name )
   h5writeAttribute( Description, H5Data, "Description" )
-  if( !is.null( LookupDim ) ) {
-    h5writeAttribute( LookupDim, H5Data, "DIM" )
+  if( !is.null( lookup_dim ) ) {
+    h5writeAttribute( lookup_dim, H5Data, "DIM" )
   }
   #Close everything up before exiting
   H5Dclose( H5Data )
@@ -68,18 +68,18 @@ writeLookupOMX <- function( OMXFileName, LookupVector, LookupSaveName, LookupDim
 #------------------------------
 #This function reads a lookup and its attributes.
 #Arguments:
-#OMXFileName = Path name of the OMX file where the lookup resides.
+#file = Path name of the OMX file where the lookup resides.
 #LookupName = Name of the lookup in the OMX file
 #Return: a list having 2 components
 #Lookup = The lookup vector
-#LookupDim = The name of the matrix dimension the lookup corresponds to
-readLookupOMX <- function( OMXFileName, LookupName ) {
+#lookup_dim = The name of the matrix dimension the lookup corresponds to
+readLookupOMX <- function( file, LookupName ) {
   #Identify the item to be read
   ItemName <- paste( "lookup", LookupName, sep="/" )
   #Read the lookup
-  Lookup <- h5read( OMXFileName, ItemName )
+  Lookup <- h5read( file, ItemName )
   #Read the name of the dimension the lookup corresponds
-  H5File <- H5Fopen( OMXFileName )
+  H5File <- H5Fopen( file )
   H5Group <- H5Gopen( H5File, "lookup" )
   H5Data <- H5Dopen( H5Group, LookupName )
   if( H5Aexists( H5Data, "DIM" ) ) {
@@ -93,7 +93,7 @@ readLookupOMX <- function( OMXFileName, LookupName ) {
   H5Gclose( H5Group )
   H5Fclose( H5File )
   #Return the lookup and the corresponding dimension
-  list( Lookup=Lookup, LookupDim=Dim )
+  list( Lookup=Lookup, lookup_dim=Dim )
 }
 
 #Function to return portion of OMX matrix based using selection statements
@@ -108,17 +108,17 @@ readLookupOMX <- function( OMXFileName, LookupName ) {
 #Multiple selection conditions may be used as argument by including in a vector
 #Multiple selection conditions are treated as intersections
 #Arguments:
-#OMXFileName = Path name of the OMX file where the lookup resides.
+#file = Path name of the OMX file where the lookup resides.
 #MatrixName = Name of the matrix in the OMX file
-#RowSelection = Row selection statement or vector of row selection statements (see above)
-#ColSelection = Column selection statement or vector of column selection statements (see above
-#RowLabels = Name of lookup to use for labeling rows
+#row_selection = Row selection statement or vector of row selection statements (see above)
+#col_selection = Column selection statement or vector of column selection statements (see above
+#row_labels = Name of lookup to use for labeling rows
 #ColLabels = Name of lookup to use for labeling columns
 #Return: The selected matrix
 
-readSelectedOMX <- function( OMXFileName, MatrixName, RowSelection=NULL, ColSelection=NULL, RowLabels=NULL, ColLabels=NULL ) {
+readSelectedOMX <- function( file, MatrixName, row_selection=NULL, col_selection=NULL, row_labels=NULL, ColLabels=NULL ) {
   #Get the matrix dimensions specified in the file
-  RootAttr <- getRootAttrOMX( OMXFileName )
+  RootAttr <- getRootAttrOMX( file )
   Shape <- RootAttr$SHAPE
   #Define function to parse a selection statement and return corresponding data indices
   findIndex <- function( SelectionStmt ) {
@@ -126,40 +126,40 @@ readSelectedOMX <- function( OMXFileName, MatrixName, RowSelection=NULL, ColSele
     IsBlank <- sapply( StmtParse, nchar ) == 0
     StmtParse <- StmtParse[ !IsBlank ]
     LookupName <- StmtParse[1]
-    Lookup <- readLookupOMX( OMXFileName, LookupName )
+    Lookup <- readLookupOMX( file, LookupName )
     assign( LookupName, Lookup[[1]]  )
     which( eval( parse( text=SelectionStmt ) ) )
   }
   #Make index for row selection
-  if( !is.null( RowSelection ) ) {
-    RowIndex <- 1:Shape[1]
-    for( Stmt in RowSelection ) {
+  if( !is.null( row_selection ) ) {
+    row_index <- 1:Shape[1]
+    for( Stmt in row_selection ) {
       Index <- findIndex( Stmt )
-      RowIndex <- intersect( RowIndex, Index )
+      row_index <- intersect( row_index, Index )
       rm( Index )
     }
   } else {
-    RowIndex <- NULL
+    row_index <- NULL
   }
   #Make index for column selection
-  if( !is.null( ColSelection ) ) {
-    ColIndex <- 1:Shape[2]
-    for( Stmt in ColSelection ) {
+  if( !is.null( col_selection ) ) {
+    col_index <- 1:Shape[2]
+    for( Stmt in col_selection ) {
       Index <- findIndex( Stmt )
-      ColIndex <- intersect( ColIndex, Index )
+      col_index <- intersect( col_index, Index )
       rm( Index )
     }
   } else {
-    ColIndex <- NULL
+    col_index <- NULL
   }
   #Extract the matrix meeting the selection criteria
-  Result <- readMatrixOMX( OMXFileName, MatrixName, RowIndex=RowIndex, ColIndex=ColIndex )
+  Result <- readMatrixOMX( file, MatrixName, row_index=row_index, col_index=col_index )
   #Label the rows and columns
-  if( !is.null( RowLabels ) ) {
-    rownames( Result ) <- readLookupOMX( OMXFileName, RowLabels )[[1]][ RowIndex ]
+  if( !is.null( row_labels ) ) {
+    rownames( Result ) <- readLookupOMX( file, row_labels )[[1]][ row_index ]
   }
   if( !is.null( ColLabels ) ) {
-    colnames( Result ) <- readLookupOMX( OMXFileName, ColLabels )[[1]][ ColIndex ]
+    colnames( Result ) <- readLookupOMX( file, ColLabels )[[1]][ col_index ]
   }
   #Return the matrix
   Result
