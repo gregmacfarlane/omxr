@@ -147,17 +147,22 @@ write_omx <- function(file, matrix, name,
   }
 }
 
-
-
-#Function to read an OMX matrix
-#------------------------------
-#This function reads an entire matrix in an OMX file or portions of a matrix using indexing.
-#Arguments:
-#OMXFileName = Path name of the OMX file where the matrix resides.
-#MatrixName = Name of the matrix in the OMX file
-#RowIndex = Vector containing numerical indices of the rows to be read.
-#ColIndex = Vector containing numerical indices of the columns to be read
-#Return: a matrix
+#' Read an OMX matrix
+#'
+#' This function reads an entire matrix in an OMX file or portions of a matrix
+#' using indexing.
+#'
+#' @param file Path name of the OMX file where the matrix resides.
+#' @param name Name of the matrix in the OMX file
+#' @param row_index An integer vector indicating the rows represented by
+#'   \code{matrix}. Defaults to \code{NULL}, meaning that all rows are read
+#'   (and \code{nrow(matrix)} is the number of rows in the matrix).
+#' @param col_index The precise corrolary to \code{row_index}, for columns.
+#'
+#' @return an R matrix object
+#'
+#' @export
+#' @import rhdf5
 read_omx <- function(file, name, row_index = NULL, col_index = NULL){
   #Get the matrix dimensions specified in the file
   RootAttr <- getRootAttrOMX( file )
