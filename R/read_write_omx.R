@@ -60,72 +60,90 @@ write_omx <- function(file, matrix, name,
                       na_value = -1, replace = FALSE,
                       description = "") {
 
-  #Get names of matrices in the file vc
-  Contents <- h5ls( OMXFileName )
+  #Get names of matrices in the file and check if exists
+  Contents <- rhdf::h5ls(file)
   MatrixNames <- Contents$name[ Contents$group == "/data" ]
-  MatrixExists <- MatrixSaveName %in% MatrixNames
+
+  if(name %in% MatrixNames & replace == FALSE ){
+    stop(paste(
+      "A matrix named '", MatrixSaveName,
+      "' already exists. Value of 'Replace' argument must be TRUE in order to overwrite.",
+      sep=""))
+  }
+
   # Get the matrix dimensions specified in the file
-  RootAttr <- getRootAttrOMX( OMXFileName )
+  RootAttr <- getRootAttrOMX(file)
   Shape <- RootAttr$SHAPE
-  #Check whether there is matrix of that name already in the file
-  if( MatrixExists & Replace == FALSE ){
-    stop( paste("A matrix named '", MatrixSaveName, "' already exists. Value of 'Replace' argument must be TRUE in order to overwrite.", sep="") )
-  }
-  #Allow indexed writing (if RowIndex and ColIndex are not NULL) only if the matrix already exists
-  if( !( is.null( RowIndex ) & is.null( ColIndex ) ) ){
-    if( !MatrixExists ){
-      stop( "Indexed writing to a matrix only allowed if a full matrix of that name already exists." )
-    }
-  }
-  #If neither dimension will be written to indexes, write the full matrix and add the NA attribute
-  if( is.null( RowIndex ) & is.null( ColIndex ) ){
+
+
+  #If neither dimension will be written to indexes, write the full matrix and
+  # add the NA attribute
+  if(is.null(row_index) & is.null(col_index) ){
+
     #Check conformance of matrix dimensions with OMX file
     if( !all( dim( Matrix ) == Shape ) ){
-      stop( paste( "Matrix dimensions not consistent with", OMXFileName, ":", Shape[1], "Rows,", Shape[2], "Cols" ) )
+      stop(paste(
+        "Matrix dimensions not consistent with", file, ":", Shape[1],
+        "Rows,", Shape[2], "Cols"
+      ))
     }
+
     #Transpose matrix and convert NA to designated storage value
-    Matrix <- t( Matrix )
-    Matrix[ is.na( Matrix ) ] <- NaValue
+    matrix <- t( matrix )
+    matrix[ is.na( matrix ) ] <- na_value
+
     #Write matrix to file
-    ItemName <- paste( "data", MatrixSaveName, sep="/" )
-    h5write( Matrix, OMXFileName, ItemName )
+    ItemName <- paste( "data", name, sep="/" )
+    rhdf::h5write( Matrix, file, ItemName )
+
     #Add the NA storage value and matrix descriptions as attributes to the matrix
-    H5File <- H5Fopen( OMXFileName )
-    H5Group <- H5Gopen( H5File, "data" )
-    H5Data <- H5Dopen( H5Group, MatrixSaveName )
-    h5writeAttribute( NaValue, H5Data, "NA" )
-    h5writeAttribute( Description, H5Data, "Description" )
+    H5File <- rhdf::H5Fopen( file )
+    H5Group <- rhdf::H5Gopen( H5File, "data" )
+    H5Data <- rhdf::H5Dopen( H5Group, name )
+    h5writeAttribute(na_value, H5Data, "NA" )
+    h5writeAttribute(description, H5Data, "Description" )
+
     #Close everything up before exiting
-    H5Dclose( H5Data )
-    H5Gclose( H5Group )
-    H5Fclose( H5File )
-    #Otherwise write only to the indexed positions
+    rhdf::H5Dclose( H5Data )
+    rhdf::H5Gclose( H5Group )
+    hrdf::H5Fclose( H5File )
+
   } else {
-    if( is.null( RowIndex ) ) RowIndex <- 1:Shape[1]
-    if( is.null( ColIndex ) ) ColIndex <- 1:Shape[2]
+
+     #Otherwise write only to the indexed positions
+
+    # set dimensions
+    if( is.null( row_index ) ) row_index <- 1:Shape[1]
+    if( is.null( col_index ) ) col_index <- 1:Shape[2]
+
     #Check that indexes are within matrix dimension ranges
-    if( any( RowIndex <= 0 ) | ( max( RowIndex ) > Shape[1] ) ){
-      stop( "One or more values of 'RowIndex' are outside the index range of the matrix." )
+    if( any( row_index <= 0 ) | ( max( row_index ) > Shape[1] ) ){
+      stop("Elements of 'row_index' are outside the index range of the matrix.")
     }
-    if( any( ColIndex <= 0 ) | ( max( ColIndex ) > Shape[2] ) ){
-      stop( "One or more values of 'ColIndex' are outside the index range of the matrix." )
+    if( any( col_index <= 0 ) | ( max( col_index ) > Shape[2] ) ){
+      stop("Elements of 'col_index' are outside the index range of the matrix.")
     }
+
     #Check that there are no duplicated indices
-    if( any( duplicated( RowIndex ) ) ){
-      stop( "Duplicated index values in 'RowIndex'. Not permitted." )
+    if( any( duplicated( row_index ) ) ){
+      stop( "Duplicated index values in 'row_index' not permitted." )
     }
-    if( any( duplicated( ColIndex ) ) ){
-      stop( "Duplicated index values in 'ColIndex'. Not permitted." )
+    if( any( duplicated( col_index ) ) ){
+      stop( "Duplicated index values in 'col_index' not permitted." )
     }
+
     #Combine the row and column indexes into a list
     #Indices are reversed since matrix is stored in transposed form
-    Indices <- list( RowIndex, ColIndex )
+    Indices <- list( row_index, col_index )
+
     #Transpose matrix and convert NA to designated storage value
-    Matrix <- t( Matrix )
-    Matrix[ is.na( Matrix ) ] <- NaValue
+    matrix <- t( matrix )
+    matrix[ is.na( matrix ) ] <- na_value
+
     # Write the matrix to the indexed positions
-    ItemName <- paste( "data", MatrixSaveName, sep="/" )
-    h5write( Matrix, OMXFileName, ItemName, index=Indices )
+    ItemName <- paste( "data", name, sep="/" )
+    rhdf::h5write(matrix, file, ItemName, index=Indices )
+
   }
 }
 
