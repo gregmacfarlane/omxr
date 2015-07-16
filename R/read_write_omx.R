@@ -49,12 +49,12 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' @param col_index The precise corrolary to \code{row_index}, for columns.
 #' @param na_value The value representing \code{NA} values in the matrix.
 #'   Defaults to \code{-1}
+#' @param replace If the named object already exists in \code{file}, should it
+#'   be replaced? Defaults to \code{FALSE}.
+#' @param description (Optional) description of matrix contents.
 #'
-#Replace = TRUE or FALSE value to determine whether an existing matrix of the same name should be replaced by new matrix
-#Description = String that describes the matrix
-#Function returns TRUE if completed successfully
-#Return: TRUE
-
+#' @export
+#' @import rhdf
 write_omx <- function(file, matrix, name,
                       row_index = NULL, col_index = NULL,
                       na_value = -1, replace = FALSE,
