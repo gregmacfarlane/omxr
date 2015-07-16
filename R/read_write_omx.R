@@ -1,14 +1,21 @@
+#'  Create an OMX file
+#'
+#'  This function creates an OMX file, establishes the shape attribute (number
+#'  of rows and columns) and version attribute, and creates the data and lookup
+#'  groups.
+#'
+#'  @param file Full path name of the OMX file to create.
+#'  @param numrows Number of rows that all matrices in the file will have.
+#'  @param numcols Number of columns that all matrices in the file will have.
+#'    Defaults to \code{numrows}.
+#'  @param level Compression level. Default \code{1}.
+#'
+#'  @return An active connection to \code{file}
+#'
+#'  @export
+#'  @import rhdf5
 create_omx <- function(file, numrows, numcols, level = 1){
 
-#Function to create an OMX file that is ready for writing data
-#-------------------------------------------------------------
-#This function creates an OMX file, establishes the shape attribute (number of rows and columns) and version attribute, and creates the data and lookup groups.
-#Arguments:
-#OMXFileName = full path name of the OMX file to create
-#Numrows = number of rows that all matrices in the file will have
-#Numcols = number of columns that all matrices in the file will have
-#Level = compression level
-#Return: TRUE
 
   if(file.exists(Filename)) { file.remove(Filename) }
   Shape <- c( Numrows, Numcols )
