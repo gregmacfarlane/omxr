@@ -49,8 +49,11 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #Function returns TRUE if completed successfully
 #Return: TRUE
 
-writeMatrixOMX <- function( OMXFileName, Matrix, MatrixSaveName, RowIndex=NULL, ColIndex=NULL, NaValue=-1 ,
-                            Replace=FALSE, Description="" ) {
+write_omx <- function(file, matrix, matrix_name,
+                      row_index = NULL, col_index = NULL,
+                      na_value = -1, replace = FALSE,
+                      description = "") {
+
   #Get names of matrices in the file vc
   Contents <- h5ls( OMXFileName )
   MatrixNames <- Contents$name[ Contents$group == "/data" ]
