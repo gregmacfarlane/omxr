@@ -30,7 +30,6 @@ create_omx <- function(file, numrows, numcols, level = 1){
   rhdf5::h5createGroup(Filename,"lookup")
   rhdf5::H5Fclose( H5File )
 
-  TRUE
 }
 
 
@@ -128,7 +127,6 @@ write_omx <- function(file, matrix, name,
     ItemName <- paste( "data", MatrixSaveName, sep="/" )
     h5write( Matrix, OMXFileName, ItemName, index=Indices )
   }
-  TRUE
 }
 
 
