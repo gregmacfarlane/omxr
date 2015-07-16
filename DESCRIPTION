@@ -6,7 +6,7 @@ Date: 2015-07-15
 Author: Ben Stabler, Brian Gregor
 Maintainer: Greg Macfarlane
 Description: The Open Matrix eXchange (OMX) file type is an open specification
-for sharing data from transportation models. The specification is built on HDF5;
-APIs to read and write are available for Cube, Emme, Python, and R.
+  for sharing data from transportation models. The specification is built on HDF5;
+  APIs to read and write are available for Cube, Emme, Python, and R.
 License: Apache
 LazyData: TRUE
