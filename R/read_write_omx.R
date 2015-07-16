@@ -1,3 +1,4 @@
+create_omx <- function(file, numrows, numcols, level = 1){
 
 #Function to create an OMX file that is ready for writing data
 #-------------------------------------------------------------
@@ -9,7 +10,6 @@
 #Level = compression level
 #Return: TRUE
 
-createFileOMX <- function( Filename, Numrows, Numcols, Level=1 ) {
   if(file.exists(Filename)) { file.remove(Filename) }
   Shape <- c( Numrows, Numcols )
   H5File <- H5Fcreate( Filename )
