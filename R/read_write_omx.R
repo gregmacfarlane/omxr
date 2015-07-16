@@ -34,22 +34,29 @@ create_omx <- function(file, numrows, numcols, level = 1){
 }
 
 
-#Function to write OMX matrix data
-#---------------------------------
-#This function writes OMX matrix data. A full matrix can be written or just portions of an existing matrix. It allows overwriting existing matrix values, but only if the "Replace" argument is set to TRUE. If only portions of the matrix are to be written to, the full matrix must already exist.
-#Arguments:
-#OMXFileName = full path name of the OMX file to store the matrix in
-#Matrix = matrix object to be stored
-#MatrixSaveName = name under which the matrix will be saved in the OMX file
-#RowIndex = vector of positional indexes that rows of matrix object are written to. NULL value means that all rows are written to.
-#ColIndex = vector of positional indexes that columns of matrix object are written to. NULL value means that all columns are written to.
-#NaValue = value that will be used to replace NA values in the matrix (NA is not a value that can be stored in OMX)
+#' Function to write OMX matrix data
+#'
+#' This function writes OMX matrix data. A full matrix can be written or just
+#' portions of an existing matrix. It allows overwriting existing matrix
+#' values, but only if the "Replace" argument is set to TRUE. If only portions
+#' of the matrix are to be written to, the full matrix must already exist.
+#'
+#' @param file Full path name of the OMX file to store the matrix in. If this is a new matrix file, see \link{create_omx}.
+#' @param matrix Matrix object to be stored.
+#' @param name Name of the matrix in the OMX object.
+#' @param row_index An integer vector indicating the rows represented by
+#'   \code{matrix}. Defaults to \code{NULL}, meaning that all rows are written
+#'   (and \code{nrow(matrix)} is the number of rows in the matrix).
+#' @param col_index The precise corrolary to \code{row_index}, for columns.
+#' @param na_value The value representing \code{NA} values in the matrix.
+#'   Defaults to \code{-1}
+#'
 #Replace = TRUE or FALSE value to determine whether an existing matrix of the same name should be replaced by new matrix
 #Description = String that describes the matrix
 #Function returns TRUE if completed successfully
 #Return: TRUE
 
-write_omx <- function(file, matrix, matrix_name,
+write_omx <- function(file, matrix, name,
                       row_index = NULL, col_index = NULL,
                       na_value = -1, replace = FALSE,
                       description = "") {
