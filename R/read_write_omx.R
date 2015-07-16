@@ -16,17 +16,23 @@
 #'  @import rhdf5
 create_omx <- function(file, numrows, numcols, level = 1){
 
+  # if file already exists, delete it
+  if(file.exists(Filename)){
+    file.remove(Filename)
+  }
 
-  if(file.exists(Filename)) { file.remove(Filename) }
-  Shape <- c( Numrows, Numcols )
-  H5File <- H5Fcreate( Filename )
-  h5writeAttribute( 0.2, H5File, "OMX_VERSION" )
-  h5writeAttribute( Shape, H5File, "SHAPE" )
-  h5createGroup(Filename,"data")
-  h5createGroup(Filename,"lookup")
-  H5Fclose( H5File )
+  # create hdf5 file with appropriate shape and attributes
+  Shape <- c(numrows, numcols)
+  H5File <- rhdf5::H5Fcreate(filename)
+  rhdf5::h5writeAttribute(0.2, H5File, "OMX_VERSION")
+  rhdf5::h5writeAttribute(Shape, H5File, "SHAPE")
+  rhdf5::h5createGroup(Filename,"data")
+  rhdf5::h5createGroup(Filename,"lookup")
+  rhdf5::H5Fclose( H5File )
+
   TRUE
 }
+
 
 #Function to write OMX matrix data
 #---------------------------------
