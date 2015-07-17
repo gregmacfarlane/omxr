@@ -6,68 +6,78 @@
 #' meanings.
 #'
 #' @param file Full path name of the OMX file to store the lookup.
-#' @param lookup_v Vector containing the lookup information.
+#' @param lookup_v Vector containing the lookup information. Should be the same
+#'   length as the matrix dimension it maps to (see \code{lookup_dim})
 #' @param name Name for the lookup vector in \code{file}.
 #' @param lookup_dim Matrix dimension that the lookup vector is associated with
 #'   Values can be "row", "col", or NULL, meaning that the lookup is
 #'   two-dimensional. Defaults to \code{NULL}.
-#' @param replace Overwrite the existing lookup (if any)? Defaults to \code{FALSE}.
+#' @param replace Overwrite the existing lookup (if any)? Defaults to
+#'   \code{FALSE}.
 #' @param description
 #'
 #' @export
 #' @import rhdf5
-write_lookup <- function( file, lookup_v, name, lookup_dim=NULL, replace=FALSE, Description="" ) {
+write_lookup <- function(file, lookup_v, name,
+                         lookup_dim = NULL, replace = FALSE, description="" ) {
+
   #Check whether there is lookup of that name already in the file
-  Contents = h5ls( file )
+  Contents = rhdf5::h5ls(file)
   LookupNames <- Contents$name[ Contents$group == "/lookup" ]
-  if( ( name %in% LookupNames ) & ( replace == FALSE ) ){
-    stop( paste("A lookup named '", name, "' already exists. 'replace' must be TRUE in order to overwrite.", sep="") )
+  if((name %in% LookupNames) & !replace){
+    stop(paste(
+      name, "already exists. Set replace = TRUE to overwrite.",
+    ))
   }
+
   #Error check lookup dimension arguments
-  if( !is.null( lookup_dim ) ){
-    if( !( lookup_dim %in% c( "row", "col" ) ) ) {
-      stop( "lookup_dim argument must be 'row', 'col', or NULL." )
-    }
-  }
-  Len <- length( lookup_v )
+  Len <- length(lookup_v)
   RootAttr <- getRootAttrOMX( file )
   Shape <- RootAttr$SHAPE
-  if( is.null( lookup_dim ) ) {
+
+  if(is.null(lookup_dim)) {  # no dimension given, meaning two-way lookup
     if( Shape[1] != Shape[2] ) {
-      stop( "Matrix is not square. You must specify the 'lookup_dim'" )
+      stop("Matrix is not square. You must specify the 'lookup_dim'")
     }
-    if( Len != Shape[1] ) {
-      stop( paste( file, " has ", Shape[1], " rows and columns. lookup_v has ", Len, " positions.", sep="" ) )
+    if(Len != Shape[1]) {
+      stop(paste(
+        file, "has", Shape[1], "rows and columns. lookup_v has",
+        Len, " positions."
+      ))
+    }
+
+  } else {  # dimension is given
+
+    # needs to be either row or col
+    if(!(lookup_dim %in% c( "row", "col" ))) {
+      stop("lookup_dim argument must be 'row', 'col', or NULL.")
+    }
+
+    # check length
+    if(lookup_dim == "row" & Len != Shape[1]){
+      stop(paste("Length of 'lookup_v' does not match row dimension of", file))
+    }
+    if(lookup_dim == "col" & Len != Shape[2]){
+      stop(paste("Length of 'lookup_v' does not match row dimension of", file))
     }
   }
-  if( !is.null( lookup_dim ) ){
-    if( lookup_dim == "row" ){
-      if( Len != Shape[1] ){
-        stop( paste( "Length of 'lookup_v' does not match row dimension of", file ) )
-      }
-    }
-    if( lookup_dim == "col" ){
-      if( Len != Shape[2] ){
-        stop( paste( "Length of 'lookup_v' does not match column dimension of", file ) )
-      }
-    }
-  }
+
   #Write lookup vector to file
   ItemName <- paste( "lookup", name, sep="/" )
-  h5write( lookup_v, file, ItemName )
+  rhdf5::h5write( lookup_v, file, ItemName )
   #Write attributes
-  H5File <- H5Fopen( file )
-  H5Group <- H5Gopen( H5File, "lookup" )
-  H5Data <- H5Dopen( H5Group, name )
-  h5writeAttribute( Description, H5Data, "Description" )
+  H5File <- rhdf5::H5Fopen( file )
+  H5Group <- rhdf5::H5Gopen( H5File, "lookup" )
+  H5Data <- rhdf5::H5Dopen( H5Group, name )
+  rhdf5::h5writeAttribute( Description, H5Data, "Description" )
   if( !is.null( lookup_dim ) ) {
-    h5writeAttribute( lookup_dim, H5Data, "DIM" )
+    rhdf5::h5writeAttribute( lookup_dim, H5Data, "DIM" )
   }
+
   #Close everything up before exiting
-  H5Dclose( H5Data )
-  H5Gclose( H5Group )
-  H5Fclose( H5File )
-  TRUE
+  rhdf5::H5Dclose( H5Data )
+  rhdf5::H5Gclose( H5Group )
+  rhdf5::H5Fclose( H5File )
 }
 
 
