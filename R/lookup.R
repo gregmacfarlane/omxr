@@ -112,49 +112,59 @@ read_lookup <- function( file, name ) {
   } else {
     Dim <- ""
   }
-  
+
   rhdf5::H5Dclose( H5Data )
   rhdf5::H5Gclose( H5Group )
   rhdf5::H5Fclose( H5File )
-  
+
   #Return the lookup and the corresponding dimension
   list( Lookup=Lookup, lookup_dim=Dim )
 }
 
-#Function to return portion of OMX matrix based using selection statements
-#-------------------------------------------------------------------------
-#This function reads a portion of an OMX matrix using selection statements to define the portion
-#Multiple selection selection statements can be used for each dimension
-#Each selection statement is a logical expression represented in a double-quoted string
-#The left operand is the name of a lookup vector
-#The operator can be any logical operator including %in%
-#The right operand is the value or values to check against. This can be the name of a vector defined in the calling environment
-#If the right operand contains literal string values, those values must be single-quoted
-#Multiple selection conditions may be used as argument by including in a vector
-#Multiple selection conditions are treated as intersections
-#Arguments:
-#file = Path name of the OMX file where the lookup resides.
-#MatrixName = Name of the matrix in the OMX file
-#row_selection = Row selection statement or vector of row selection statements (see above)
-#col_selection = Column selection statement or vector of column selection statements (see above
-#row_labels = Name of lookup to use for labeling rows
-#ColLabels = Name of lookup to use for labeling columns
-#Return: The selected matrix
+#' Read a OMX matrix based on a lookup vector
+#'
+#' This function reads a portion of an OMX matrix using selection statements to
+#' define the portion.
+#'
+#' @details  Multiple selection selection statements can be used for
+#' each dimension. Each selection statement is a logical expression represented
+#' in a double-quoted string. The left operand is the name of a lookup vector
+#' The operator can be any logical operator including %in% The right operand is
+#' the value or values to check against. This can be the name of a vector
+#' defined in the calling environment. If the right operand contains literal
+#' string values, those values must be single-quoted. Multiple selection
+#' conditions may be used as argument by including in a vector. Multiple
+#' selection conditions are treated as intersections.
+#'
+#' @param file Path name of the OMX file where the lookup resides.
+#' @param matrix_name Name of the matrix in the OMX file.
+#' @param row_selection Row selection statement or vector of row selection
+#'   statements (see Details).
+#' @param col_selection Column selection statement or vector of column selection
+#'   statements (see Details).
+#' @param row_labels Name of lookup to use for labeling rows.
+#' @param col_labels Name of lookup to use for labeling columns
+#'
+#' @return An R matrix object representing the selected rows and colums.
+read_selected_omx <- function(file, matrix_name,
+                              row_selection = NULL, col_selection = NULL,
+                              row_labels = NULL, col_labels = NULL) {
 
-readSelectedOMX <- function( file, MatrixName, row_selection=NULL, col_selection=NULL, row_labels=NULL, ColLabels=NULL ) {
   #Get the matrix dimensions specified in the file
   RootAttr <- getRootAttrOMX( file )
   Shape <- RootAttr$SHAPE
-  #Define function to parse a selection statement and return corresponding data indices
+
+  # function to parse a selection statement and return corresponding indices
   findIndex <- function( SelectionStmt ) {
     StmtParse <- unlist( strsplit( SelectionStmt, " " ) )
     IsBlank <- sapply( StmtParse, nchar ) == 0
     StmtParse <- StmtParse[ !IsBlank ]
     LookupName <- StmtParse[1]
-    Lookup <- readLookupOMX( file, LookupName )
+    Lookup <- read_lookup( file, LookupName )
     assign( LookupName, Lookup[[1]]  )
     which( eval( parse( text=SelectionStmt ) ) )
   }
+
   #Make index for row selection
   if( !is.null( row_selection ) ) {
     row_index <- 1:Shape[1]
@@ -166,6 +176,7 @@ readSelectedOMX <- function( file, MatrixName, row_selection=NULL, col_selection
   } else {
     row_index <- NULL
   }
+
   #Make index for column selection
   if( !is.null( col_selection ) ) {
     col_index <- 1:Shape[2]
@@ -177,15 +188,18 @@ readSelectedOMX <- function( file, MatrixName, row_selection=NULL, col_selection
   } else {
     col_index <- NULL
   }
+
   #Extract the matrix meeting the selection criteria
-  Result <- readMatrixOMX( file, MatrixName, row_index=row_index, col_index=col_index )
+  Result <- read_omx(file, matrix_name,
+                     row_index = row_index, col_index = col_index)
+
   #Label the rows and columns
   if( !is.null( row_labels ) ) {
-    rownames( Result ) <- readLookupOMX( file, row_labels )[[1]][ row_index ]
+    rownames( Result ) <- read_lookup( file, row_labels )[[1]][ row_index ]
   }
-  if( !is.null( ColLabels ) ) {
-    colnames( Result ) <- readLookupOMX( file, ColLabels )[[1]][ col_index ]
+  if( !is.null( col_labels ) ) {
+    colnames( Result ) <- read_lookup( file, col_labels )[[1]][ col_index ]
   }
-  #Return the matrix
+
   Result
 }
