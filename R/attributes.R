@@ -1,15 +1,3 @@
-#=====
-#omx.r
-#=====
-
-#Read and Write Open Matrix Files
-#Ben Stabler, stabler@pbworld.com, 08/21/13
-#Brian Gregor, gregor@or-analytics.com, 12/18/13
-#Requires the rhdf5 v2.5.1+ package from bioconductor
-#Transposes matrix when writing it to file to be in row major order like C/Python
-################################################################################
-
-
 #Utility function to read the SHAPE and VERSION attributes
 #---------------------------------------------------------
 #This function reads the SHAPE and VERSION attributes of an OMX file. This is called by several other functions
