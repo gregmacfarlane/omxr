@@ -81,34 +81,42 @@ write_lookup <- function(file, lookup_v, name,
 }
 
 
-#Function to read an OMX lookup
-#------------------------------
-#This function reads a lookup and its attributes.
-#Arguments:
-#file = Path name of the OMX file where the lookup resides.
-#LookupName = Name of the lookup in the OMX file
-#Return: a list having 2 components
-#Lookup = The lookup vector
-#lookup_dim = The name of the matrix dimension the lookup corresponds to
-readLookupOMX <- function( file, name ) {
+#' Function to read an OMX lookup
+#'
+#' This function reads a lookup and its attributes.
+#'
+#' @param file  Path name of the OMX file where the lookup resides.
+#' @param name Name of the lookup in the OMX file
+#'
+#' @return A list of two elements:
+#'  \description{
+#'    \item{\code{lookup}}{The lookup vector.}
+#'    \item{\code{lookup_dim}}{String, whether the lookup refers to rows or
+#'      columns. }
+#'
+#' @export
+#' @import rhdf5
+read_lookup <- function( file, name ) {
   #Identify the item to be read
   ItemName <- paste( "lookup", name, sep="/" )
   #Read the lookup
-  Lookup <- h5read( file, ItemName )
+  Lookup <- rhdf5::h5read( file, ItemName )
   #Read the name of the dimension the lookup corresponds
-  H5File <- H5Fopen( file )
-  H5Group <- H5Gopen( H5File, "lookup" )
-  H5Data <- H5Dopen( H5Group, name )
-  if( H5Aexists( H5Data, "DIM" ) ) {
-    H5Attr <- H5Aopen( H5Data, "DIM" )
-    Dim <- H5Aread( H5Attr )
+  H5File <- rhdf5::H5Fopen( file )
+  H5Group <- rhdf5::H5Gopen( H5File, "lookup" )
+  H5Data <- rhdf5::H5Dopen( H5Group, name )
+  if( rhdf5::H5Aexists( H5Data, "DIM" ) ) {
+    H5Attr <- rhdf5::H5Aopen( H5Data, "DIM" )
+    Dim <- rhdf5::H5Aread( H5Attr )
     H5Aclose( H5Attr )
   } else {
     Dim <- ""
   }
-  H5Dclose( H5Data )
-  H5Gclose( H5Group )
-  H5Fclose( H5File )
+  
+  rhdf5::H5Dclose( H5Data )
+  rhdf5::H5Gclose( H5Group )
+  rhdf5::H5Fclose( H5File )
+  
   #Return the lookup and the corresponding dimension
   list( Lookup=Lookup, lookup_dim=Dim )
 }
