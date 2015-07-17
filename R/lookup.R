@@ -14,7 +14,7 @@
 #'   two-dimensional. Defaults to \code{NULL}.
 #' @param replace Overwrite the existing lookup (if any)? Defaults to
 #'   \code{FALSE}.
-#' @param description
+#' @param description String defining the lookup.
 #'
 #' @export
 #' @import rhdf5
@@ -26,7 +26,7 @@ write_lookup <- function(file, lookup_v, name,
   LookupNames <- Contents$name[ Contents$group == "/lookup" ]
   if((name %in% LookupNames) & !replace){
     stop(paste(
-      name, "already exists. Set replace = TRUE to overwrite.",
+      name, "already exists. Set replace = TRUE to overwrite."
     ))
   }
 
@@ -93,7 +93,7 @@ write_lookup <- function(file, lookup_v, name,
 #'    \item{\code{lookup}}{The lookup vector.}
 #'    \item{\code{lookup_dim}}{String, whether the lookup refers to rows or
 #'      columns. }
-#'
+#'  }
 #' @export
 #' @import rhdf5
 read_lookup <- function( file, name ) {
