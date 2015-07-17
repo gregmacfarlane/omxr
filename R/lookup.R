@@ -90,15 +90,15 @@ write_lookup <- function(file, lookup_v, name,
 #Return: a list having 2 components
 #Lookup = The lookup vector
 #lookup_dim = The name of the matrix dimension the lookup corresponds to
-readLookupOMX <- function( file, LookupName ) {
+readLookupOMX <- function( file, name ) {
   #Identify the item to be read
-  ItemName <- paste( "lookup", LookupName, sep="/" )
+  ItemName <- paste( "lookup", name, sep="/" )
   #Read the lookup
   Lookup <- h5read( file, ItemName )
   #Read the name of the dimension the lookup corresponds
   H5File <- H5Fopen( file )
   H5Group <- H5Gopen( H5File, "lookup" )
-  H5Data <- H5Dopen( H5Group, LookupName )
+  H5Data <- H5Dopen( H5Group, name )
   if( H5Aexists( H5Data, "DIM" ) ) {
     H5Attr <- H5Aopen( H5Data, "DIM" )
     Dim <- H5Aread( H5Attr )
