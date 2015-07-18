@@ -10,3 +10,5 @@ Description: The Open Matrix eXchange (OMX) file type is an open specification
   APIs to read and write are available for Cube, Emme, Python, and R.
 License: Apache
 LazyData: TRUE
+Suggests: knitr
+VignetteBuilder: knitr
