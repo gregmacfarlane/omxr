@@ -69,7 +69,7 @@ write_lookup <- function(file, lookup_v, name,
   H5File <- rhdf5::H5Fopen( file )
   H5Group <- rhdf5::H5Gopen( H5File, "lookup" )
   H5Data <- rhdf5::H5Dopen( H5Group, name )
-  rhdf5::h5writeAttribute( Description, H5Data, "Description" )
+  rhdf5::h5writeAttribute( description, H5Data, "Description" )
   if( !is.null( lookup_dim ) ) {
     rhdf5::h5writeAttribute( lookup_dim, H5Data, "DIM" )
   }
