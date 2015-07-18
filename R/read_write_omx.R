@@ -143,11 +143,6 @@ write_omx <- function(file, matrix, name,
     ItemName <- paste( "data", name, sep="/" )
     rhdf5::h5write(matrix, file, ItemName, index=Indices )
 
-    #Close everything up before exiting
-    rhdf5::H5Dclose( H5Data )
-    rhdf5::H5Gclose( H5Group )
-    rhdf5::H5Fclose( H5File )
-
   }
 }
 
