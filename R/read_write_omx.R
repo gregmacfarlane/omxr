@@ -72,7 +72,7 @@ write_omx <- function(file, matrix, name,
   }
 
   # Get the matrix dimensions specified in the file
-  RootAttr <- getRootAttrOMX(file)
+  RootAttr <- get_omx_attr(file)
   Shape <- RootAttr$SHAPE
 
 
@@ -166,7 +166,7 @@ write_omx <- function(file, matrix, name,
 read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 
   #Get the matrix dimensions specified in the file
-  RootAttr <- getRootAttrOMX( file )
+  RootAttr <- get_omx_attr( file )
   Shape <- RootAttr$SHAPE
 
   #Identify the item to be read

@@ -32,7 +32,7 @@ write_lookup <- function(file, lookup_v, name,
 
   #Error check lookup dimension arguments
   Len <- length(lookup_v)
-  RootAttr <- getRootAttrOMX( file )
+  RootAttr <- get_omx_attr( file )
   Shape <- RootAttr$SHAPE
 
   if(is.null(lookup_dim)) {  # no dimension given, meaning two-way lookup
@@ -151,7 +151,7 @@ read_selected_omx <- function(file, matrix_name,
                               row_labels = NULL, col_labels = NULL) {
 
   #Get the matrix dimensions specified in the file
-  RootAttr <- getRootAttrOMX( file )
+  RootAttr <- get_omx_attr( file )
   Shape <- RootAttr$SHAPE
 
   # function to parse a selection statement and return corresponding indices
