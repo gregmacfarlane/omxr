@@ -146,6 +146,9 @@ read_lookup <- function( file, name ) {
 #' @param col_labels Name of lookup to use for labeling columns
 #'
 #' @return An R matrix object representing the selected rows and colums.
+#'
+#' @export
+#' @import rhdf5
 read_selected_omx <- function(file, matrix_name,
                               row_selection = NULL, col_selection = NULL,
                               row_labels = NULL, col_labels = NULL) {
