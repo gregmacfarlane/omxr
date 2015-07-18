@@ -66,9 +66,8 @@ write_omx <- function(file, matrix, name,
 
   if(name %in% MatrixNames & replace == FALSE ){
     stop(paste(
-      "A matrix named '", MatrixSaveName,
-      "' already exists. Value of 'Replace' argument must be TRUE in order to overwrite.",
-      sep=""))
+      "Matrix", name, "already exists. To overwrite, set 'replace = TRUE"
+    ))
   }
 
   # Get the matrix dimensions specified in the file
@@ -81,7 +80,7 @@ write_omx <- function(file, matrix, name,
   if(is.null(row_index) & is.null(col_index) ){
 
     #Check conformance of matrix dimensions with OMX file
-    if( !all( dim( Matrix ) == Shape ) ){
+    if( !all( dim( matrix ) == Shape ) ){
       stop(paste(
         "Matrix dimensions not consistent with", file, ":", Shape[1],
         "Rows,", Shape[2], "Cols"
@@ -94,7 +93,7 @@ write_omx <- function(file, matrix, name,
 
     #Write matrix to file
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5write( Matrix, file, ItemName )
+    rhdf5::h5write( matrix, file, ItemName )
 
     #Add the NA storage value and matrix descriptions as attributes to the matrix
     H5File <- rhdf5::H5Fopen( file )
@@ -106,7 +105,7 @@ write_omx <- function(file, matrix, name,
     #Close everything up before exiting
     rhdf5::H5Dclose( H5Data )
     rhdf5::H5Gclose( H5Group )
-    hrdf::H5Fclose( H5File )
+    rhdf5::H5Fclose( H5File )
 
   } else {
 
