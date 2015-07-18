@@ -56,5 +56,45 @@ write_omx(file = "simple.omx", matrix = cost, "cost",
 
 # Read
 
+Now that the matrices are in the file, we can try reading them.
+
+```{r read_matrix}
+read_omx("simple.omx", "trips")
+read_omx("simple.omx", "cost")
+```
+
+You can also read subsets of matrices.
+
+```{r read_subset}
+read_omx("simple.omx", "trips", row_index = 2:4, col_index = 2:5)
+```
+
+There are also functions to get the attributes of an OMX file.
+
+```{r attributes}
+get_omx_attr("simple.omx")
+rhdf5::h5ls("simple.omx")
+```
+
+
 # Lookups
+
+Perhaps a better way to read a subset of a matrix is with a defined "lookup." 
+These can be stored in the omx container in addition to the matrices. You specify
+the lookup with a vector of the appropriate length, where `TRUE` means the 
+row or column should be included, and `FALSE` means otherwise.
+
+```{r write_lookup}
+lookup <- zones %in% c(1, 2:5, 9)
+lookup
+write_lookup("simple.omx", lookup_v = lookup, 
+             name = "trial", description = "test lookup", replace = TRUE)
+```
+
+Now we can get the selected rows and columns from either matrix automatically.
+
+```{r read_lookup}
+read_selected_omx("simple.omx", "trips", 
+                  row_selection = "trial", col_selection = "trial")
+```
 
