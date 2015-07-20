@@ -7,15 +7,18 @@ This is a reimplementation of the R API maintained by osPlanning and stored in a
 `omxr` is not yet on CRAN. To install it, first install the `devtools`
 library. Then install `omxr` directly from GitHub.
 
-    install_github("gregmacfarlane/omxr")
+    devtools::install_github("gregmacfarlane/omxr")
 
 To install these functions in your workspace, 
 
-    devtools
+    library(omxr)
     
-Note that these functions import on the rhdf5 v2.5.1+ package from bioconductor,
-which is also not on CRAN. 
+Note that these functions import on the `rhdf5` v2.5.1+ package from
+[Bioconductor](http://bioconductor.org/packages/release/bioc/html/rhdf5.html),
+which is also not on CRAN. To install this library, 
 
+    source("http://bioconductor.org/biocLite.R")
+    biocLite("rhdf5")
 
 
 License 
