@@ -13,7 +13,7 @@ read_lookup(file, name)
 }
 \value{
 A list of two elements:
- \description{
+ \describe{
    \item{\code{lookup}}{The lookup vector.}
    \item{\code{lookup_dim}}{String, whether the lookup refers to rows or
      columns. }

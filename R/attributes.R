@@ -29,7 +29,7 @@ get_omx_attr <- function( file ) {
 #' @param file The path to the OMX file.
 #'
 #' @return A list with 5 elements:
-#' \description{
+#' \describe{
 #'   \item{Version}{the OMX version number}
 #'   \item{Rows}{The number of rows in the matrix.}
 #'   \item{Columns}{The number of columns in the matrix.}

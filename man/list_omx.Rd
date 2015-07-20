@@ -11,7 +11,7 @@ list_omx(file)
 }
 \value{
 A list with 5 elements:
-\description{
+\describe{
   \item{Version}{the OMX version number}
   \item{Rows}{The number of rows in the matrix.}
   \item{Columns}{The number of columns in the matrix.}

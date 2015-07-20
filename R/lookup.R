@@ -89,7 +89,7 @@ write_lookup <- function(file, lookup_v, name,
 #' @param name Name of the lookup in the OMX file
 #'
 #' @return A list of two elements:
-#'  \description{
+#'  \describe{
 #'    \item{\code{lookup}}{The lookup vector.}
 #'    \item{\code{lookup_dim}}{String, whether the lookup refers to rows or
 #'      columns. }
