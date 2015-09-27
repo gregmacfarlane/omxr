@@ -24,7 +24,8 @@ get_omx_attr <- function( file ) {
 
 #' Function to write matrix attribute
 #'
-#' @param file Full path name of the OMX file to store the matrix in. If this is a new matrix file, see \link{create_omx}.
+#' @param file Full path name of the OMX file to store the matrix in. If this is
+#'   a new matrix file, see \link{create_omx}.
 #' @param name Name of the matrix in the OMX object.
 #' @param attr_name Name of the attribute.
 #' @param value Attribute value
@@ -37,7 +38,7 @@ write_matrix_attr <- function( file, name, attr_name, value) {
     H5Group <- rhdf5::rH5Gopen( H5File, "data" )
     H5Data <- rhdf5::H5Dopen( H5Group, name )
     rhdf5::h5writeAttribute(value, H5Data, attr_name)
-		
+
     #Close everything up before exiting
     rhdf5::H5Dclose( H5Data )
     rhdf5::H5Gclose( H5Group )
@@ -108,12 +109,12 @@ list_omx <- function( file ) {
   Names <- LookupContents$name
   Types <- LookupContents$dclass
   LookupAttr <- list()
-	
+
 	if(length(Names)>0){
 	  for( i in 1:length(Names) ) {
 	    Attr <- list()
 	    H5Data <- rhdf5::H5Dopen( H5Group, Names[i] )
-			
+
 	    if( rhdf5::H5Aexists( H5Data, "DIM" ) ) {
 	      H5Attr <- rhdf5::H5Aopen( H5Data, "DIM" )
 	      Attr$lookupdim <- rhdf5::H5Aread( H5Attr )
@@ -121,7 +122,7 @@ list_omx <- function( file ) {
 	    } else {
 	      Attr$lookupdim <- ""
 	    }
-			
+
 	    if( rhdf5::H5Aexists( H5Data, "Description" ) ) {
 	      H5Attr <- rhdf5::H5Aopen( H5Data, "Description" )
 	      Attr$description <- rhdf5::H5Aread( H5Attr )
@@ -129,12 +130,12 @@ list_omx <- function( file ) {
 	    } else {
 	      Attr$description <- ""
 	    }
-			
+
 	    LookupAttr[[Names[i]]] <- Attr
 	    rhdf5::H5Dclose( H5Data )
 	    rm( Attr )
 		}
-		
+
 	  rhdf5::H5Gclose( H5Group )
 	  rhdf5::H5Fclose( H5File )
 
@@ -148,7 +149,7 @@ list_omx <- function( file ) {
   } else {
     MatInfo <- MatrixContents[,c("name","dclass","dim")]
   }
-	
+
 	if(length(LookupAttr)>0) {
     LookupInfo <- cbind( LookupContents[,c("name","dclass","dim")], LookupAttr )
   } else {
