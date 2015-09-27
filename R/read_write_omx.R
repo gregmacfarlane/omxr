@@ -63,6 +63,7 @@ write_omx <- function(file, matrix, name,
   #Get names of matrices in the file and check if exists
   Contents <- rhdf5::h5ls(file)
   MatrixNames <- Contents$name[ Contents$group == "/data" ]
+  MatrixExists <- MatrixSaveName %in% MatrixNames
 
   if(name %in% MatrixNames & replace == FALSE ){
     stop(paste(
@@ -74,7 +75,15 @@ write_omx <- function(file, matrix, name,
   RootAttr <- get_omx_attr(file)
   Shape <- RootAttr$SHAPE
 
-
+  #Allow indexed writing only if the matrix already exists
+  if( !( is.null(row_index) & is.null(col_index) ) ){
+    if( !MatrixExists ){
+      stop(
+        "Indexed writing to a matrix only allowed if a full matrix of that name already exists."
+      )
+    }
+  }
+  
   #If neither dimension will be written to indexes, write the full matrix and
   # add the NA attribute
   if(is.null(row_index) & is.null(col_index) ){
@@ -91,9 +100,14 @@ write_omx <- function(file, matrix, name,
     matrix <- t( matrix )
     matrix[ is.na( matrix ) ] <- na_value
 
-    #Write matrix to file
+    #Write matrix to file, set chunking and compression
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5write( matrix, file, ItemName )
+    rhdf5::h5createDataset(
+      matrix, ItemName,
+      dim(matrix), chunk=c(nrow(matrix), 1),
+      level=7
+    )
+    rhdf5::h5write(matrix, file, ItemName)
 
     #Add the NA storage value and matrix descriptions as attributes to the matrix
     H5File <- rhdf5::H5Fopen( file )
@@ -108,9 +122,8 @@ write_omx <- function(file, matrix, name,
     rhdf5::H5Fclose( H5File )
 
   } else {
-
-     #Otherwise write only to the indexed positions
-
+    #Otherwise write only to the indexed positions
+    
     # set dimensions
     if( is.null( row_index ) ) row_index <- 1:Shape[1]
     if( is.null( col_index ) ) col_index <- 1:Shape[2]
