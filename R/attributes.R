@@ -22,6 +22,27 @@ get_omx_attr <- function( file ) {
   RootAttr
 }
 
+#' Function to write matrix attribute
+#'
+#' @param file Full path name of the OMX file to store the matrix in. If this is a new matrix file, see \link{create_omx}.
+#' @param name Name of the matrix in the OMX object.
+#' @param attr_name Name of the attribute.
+#' @param value Attribute value
+#'
+#' @import rhdf5
+#'
+#' @export
+write_matrix_attr <- function( file, name, attr_name, value) {
+    H5File <- rhdf5::H5Fopen(file)
+    H5Group <- rhdf5::rH5Gopen( H5File, "data" )
+    H5Data <- rhdf5::H5Dopen( H5Group, name )
+    rhdf5::h5writeAttribute(value, H5Data, attr_name)
+		
+    #Close everything up before exiting
+    rhdf5::H5Dclose( H5Data )
+    rhdf5::H5Gclose( H5Group )
+    rhdf5::H5Fclose( H5File )
+}
 
 
 #' List the contents of an OMX file
@@ -130,4 +151,3 @@ list_omx <- function( file ) {
     Matrices=MatInfo, Lookups=LookupInfo
   )
 }
-
