@@ -7,11 +7,14 @@ Authors@R: c(
     person("Brian", "Gregor", email = "", role = "aut"),
     person("Ben", "Stabler", email = "", role = "aut"),
     person("Greg", "Macfarlane", email = "gregmacfarlane@gmail.com", role = "cre") )
-Description: The Open Matrix (OMX) file type is an open specification
-  for sharing data from transportation models. The specification is built on HDF5;
-  APIs to read and write are available for Cube, Emme, Python, Java, and R.
+Description: The Open Matrix (OMX) file type is an open specification for
+    sharing data from transportation models. The specification is built on HDF5;
+    APIs to read and write are available for Cube, Emme, Python, Java, and R.
 License: Apache
 LazyData: TRUE
-Suggests: knitr
+Suggests:
+    knitr
 VignetteBuilder: knitr
-Imports: rhdf5
+Imports:
+    rhdf5
+RoxygenNote: 5.0.1
