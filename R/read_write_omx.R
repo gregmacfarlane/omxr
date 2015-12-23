@@ -1,19 +1,20 @@
-#'  Create an OMX file
+#' Create an OMX file
 #'
-#'  This function creates an OMX file, establishes the shape attribute (number
-#'  of rows and columns) and version attribute, and creates the data and lookup
-#'  groups.
-#'
-#'  @param file Full path name of the OMX file to create.
-#'  @param numrows Number of rows that all matrices in the file will have.
-#'  @param numcols Number of columns that all matrices in the file will have.
+#' This function creates an OMX file, establishes the shape attribute (number
+#' of rows and columns) and version attribute, and creates the data and lookup
+#' groups.
+#
+#' @param file Full path name of the OMX file to create.
+#' @param numrows Number of rows that all matrices in the file will have.
+#' @param numcols Number of columns that all matrices in the file will have.
 #'    Defaults to \code{numrows}.
-#'  @param level Compression level. Default \code{1}.
+#' @param level Compression level. Default \code{1}.
 #'
-#'  @return An active connection to \code{file}
+#' @return An active connection to \code{file}
 #'
-#'  @export
-#'  @import rhdf5
+#' @import rhdf5
+#'
+#' @export
 create_omx <- function(file, numrows, numcols, level = 1){
 
   # if file already exists, delete it
@@ -40,7 +41,8 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' values, but only if the "Replace" argument is set to TRUE. If only portions
 #' of the matrix are to be written to, the full matrix must already exist.
 #'
-#' @param file Full path name of the OMX file to store the matrix in. If this is a new matrix file, see \link{create_omx}.
+#' @param file Full path name of the OMX file to store the matrix in. If this is
+#'   a new matrix file, see \link{create_omx}.
 #' @param matrix Matrix object to be stored.
 #' @param name Name of the matrix in the OMX object.
 #' @param row_index An integer vector indicating the rows represented by
@@ -63,7 +65,7 @@ write_omx <- function(file, matrix, name,
   #Get names of matrices in the file and check if exists
   Contents <- rhdf5::h5ls(file)
   MatrixNames <- Contents$name[ Contents$group == "/data" ]
-  MatrixExists <- MatrixSaveName %in% MatrixNames
+  MatrixExists <- name %in% MatrixNames
 
   if(name %in% MatrixNames & replace == FALSE ){
     stop(paste(
@@ -83,7 +85,7 @@ write_omx <- function(file, matrix, name,
       )
     }
   }
-  
+
   #If neither dimension will be written to indexes, write the full matrix and
   # add the NA attribute
   if(is.null(row_index) & is.null(col_index) ){
@@ -102,8 +104,7 @@ write_omx <- function(file, matrix, name,
 
     #Write matrix to file, set chunking and compression
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5createDataset(
-      matrix, ItemName,
+    rhdf5::h5createDataset(file, matrix, ItemName,
       dim(matrix), chunk=c(nrow(matrix), 1),
       level=7
     )
@@ -123,7 +124,7 @@ write_omx <- function(file, matrix, name,
 
   } else {
     #Otherwise write only to the indexed positions
-    
+
     # set dimensions
     if( is.null( row_index ) ) row_index <- 1:Shape[1]
     if( is.null( col_index ) ) col_index <- 1:Shape[2]
