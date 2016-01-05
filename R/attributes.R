@@ -65,7 +65,7 @@ write_matrix_attr <- function( file, name, attr_name, value) {
 #' @import rhdf5
 list_omx <- function( file ) {
   #Get the version and shape information
-	RootAttr <- getRootAttrOMX( file )
+	RootAttr <- get_omx_attr( file )
 	Version <- RootAttr$VERSION
 	Shape <- RootAttr$SHAPE
   #Use the h5ls function to read the contents of the file
