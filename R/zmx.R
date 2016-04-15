@@ -44,14 +44,14 @@ read_zmx <- function(zmx) {
 
   #Read matrix attributes
   NumRows = as.integer(
-    scan( unzip( zmx, "_rows", exdir="TempZip" ), what="", quiet=T ) )
+    scan( utils::unzip( zmx, "_rows", exdir="TempZip" ), what="", quiet=T ) )
   NumCols = as.integer(
-    scan( unzip( zmx, "_columns", exdir="TempZip" ), what="", quiet=T ) )
+    scan( utils::unzip( zmx, "_columns", exdir="TempZip" ), what="", quiet=T ) )
   RowNames = strsplit(
-    scan( unzip( zmx, "_external row numbers", exdir="TempZip" ),
+    scan( utils::unzip( zmx, "_external row numbers", exdir="TempZip" ),
           what="", quiet=T ),"," )[[1]]
   ColNames = strsplit(
-    scan( unzip( zmx, "_external column numbers", exdir="TempZip" ),
+    scan( utils::unzip( zmx, "_external column numbers", exdir="TempZip" ),
           what="", quiet=T ),"," )[[1]]
 
   #Initialize matrix to hold values
