@@ -1,0 +1,100 @@
+---
+title: "Using `omxr`"
+author: "Greg Macfarlane"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: TRUE
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup}
+set.seed(10)
+```
+
+
+
+```{r load_library}
+library(omxr)
+```
+
+
+# Create and write.
+
+`.omx` files are HDF5 containers storing many different matrices and their
+attributes. You can create a new container with the `create_omx` command.
+
+```{r create_omx}
+zones <- 1:10
+create_omx(
+  file = "simple.omx",  
+  numrows = length(zones), numcols = length(zones)
+)
+```
+
+Let's start with a 10-zone system with random trips and costs.
+
+```{r make_matrix}
+trips <- matrix(rnorm(n = length(zones)^2, 200, 50),  
+                nrow = length(zones), ncol = length(zones))
+cost <- matrix(rlnorm(n = length(zones)^2, 1, 1),
+               nrow = length(zones), ncol = length(zones))
+```
+
+We can store these in the omx container.
+
+```{r write_omx}
+write_omx(file = "simple.omx", matrix = trips, "trips", 
+          description = "Total Trips")
+
+write_omx(file = "simple.omx", matrix = cost, "cost", 
+          description = "Generalized Cost")
+```
+
+
+# Read
+
+Now that the matrices are in the file, we can try reading them.
+
+```{r read_matrix}
+read_omx("simple.omx", "trips")
+read_omx("simple.omx", "cost")
+```
+
+You can also read subsets of matrices.
+
+```{r read_subset}
+read_omx("simple.omx", "trips", row_index = 2:4, col_index = 2:5)
+```
+
+There are also functions to get the attributes of an OMX file.
+
+```{r attributes}
+get_omx_attr("simple.omx")
+rhdf5::h5ls("simple.omx")
+```
+
+
+# Lookups
+
+Perhaps a better way to read a subset of a matrix is with a defined "lookup." 
+These can be stored in the omx container in addition to the matrices. You specify
+the lookup with a vector of the appropriate length, where `TRUE` means the 
+row or column should be included, and `FALSE` means otherwise.
+
+```{r write_lookup}
+lookup <- zones %in% c(1, 2:5, 9)
+lookup
+write_lookup("simple.omx", lookup_v = lookup, 
+             name = "trial", description = "test lookup", replace = TRUE)
+```
+
+Now we can get the selected rows and columns from either matrix automatically.
+
+```{r read_lookup}
+read_selected_omx("simple.omx", "trips", 
+                  row_selection = "trial", col_selection = "trial")
+```
+
