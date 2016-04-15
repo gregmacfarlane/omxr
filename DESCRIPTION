@@ -2,7 +2,7 @@ Package: omxr
 Type: Package
 Title: Read and Write Open Matrix Files
 Version: 0.2.0
-Date: 2015-07-15
+Date: 2016-01-06
 Authors@R: c(
     person("Brian", "Gregor", email = "", role = "aut"),
     person("Ben", "Stabler", email = "", role = "aut"),
@@ -10,7 +10,7 @@ Authors@R: c(
 Description: The Open Matrix (OMX) file type is an open specification for
     sharing data from transportation models. The specification is built on HDF5;
     APIs to read and write are available for Cube, Emme, Python, Java, and R.
-License: Apache
+License: file LICENSE
 LazyData: TRUE
 Suggests:
     knitr
