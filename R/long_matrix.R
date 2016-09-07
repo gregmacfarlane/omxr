@@ -4,7 +4,7 @@
 #'
 #' @return A \code{data_frame} with row and column ids and matrix values.
 #'
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr "%>%"
 #'
 #' @export
 #'
