@@ -16,5 +16,7 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 Imports:
-    rhdf5
+    rhdf5,
+    tidyr,
+    dplyr
 RoxygenNote: 5.0.1
