@@ -27,7 +27,8 @@ long_matrix <- function(matrix, value = NULL){
   dplyr::bind_cols(dplyr::data_frame(origin = rnames), df) %>%
 
     # longify
-    tidyr::gather_("destination", value, cnames, convert = TRUE)
+    tidyr::gather_("destination", value, cnames, convert = TRUE) %>%
+    readr::type_convert()
 
 
 }
