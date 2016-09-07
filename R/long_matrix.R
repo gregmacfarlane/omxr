@@ -24,7 +24,7 @@ long_matrix <- function(matrix, value = NULL){
   # column names as variables
   df <- matrix %>% as.data.frame()
   names(df) <- cnames
-  dplyr::bind_cols(data_frame(origin = rnames), df) %>%
+  dplyr::bind_cols(dplyr::data_frame(origin = rnames), df) %>%
 
     # longify
     tidyr::gather_("destination", value, cnames, convert = TRUE)
