@@ -4,10 +4,13 @@
 \alias{long_matrix}
 \title{Transform a matrix into long format}
 \usage{
-long_matrix(matrix)
+long_matrix(matrix, value = NULL)
 }
 \arguments{
 \item{matrix}{An R matrix with row and column names or indices}
+
+\item{value}{A character string identifying the name of the value column in
+the output data_frame}
 }
 \value{
 A \code{data_frame} with row and column ids and matrix values.
