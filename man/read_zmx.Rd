@@ -4,10 +4,10 @@
 \alias{read_zmx}
 \title{Read a PB ZMX file}
 \usage{
-read_zmx(zmx)
+read_zmx(fileName)
 }
 \arguments{
-\item{zmx}{Path to a ZMX file.}
+\item{fileName}{Path to a ZMX file.}
 }
 \value{
 An R matrix object.
