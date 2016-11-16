@@ -12,7 +12,7 @@
 #'
 #' @return An active connection to \code{file}
 #'
-#' @import rhdf5
+#' @importFrom rhdf5 h5writeAttribute h5createGroup H5Fclose H5Gclose H5Fclose
 #'
 #' @export
 create_omx <- function(file, numrows, numcols, level = 1){
@@ -104,18 +104,17 @@ write_omx <- function(file, matrix, name,
 
     #Write matrix to file, set chunking and compression
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5createDataset(file, matrix, ItemName,
+    rhdf5::h5createDataset(H5File, matrix, ItemName,
       dim(matrix), chunk=c(nrow(matrix), 1),
       level=7
     )
-    rhdf5::h5write(matrix, file, ItemName)
+    rhdf5::h5writeDataset.matrix(matrix, H5File, ItemName)
 
     #Add the NA storage value and matrix descriptions as attributes to the matrix
-    H5File <- rhdf5::H5Fopen( file )
     H5Group <- rhdf5::H5Gopen( H5File, "data" )
     H5Data <- rhdf5::H5Dopen( H5Group, name )
-    h5writeAttribute(na_value, H5Data, "NA" )
-    h5writeAttribute(description, H5Data, "Description" )
+    rhdf5::h5writeAttribute.double(na_value, H5Data, "NA" )
+    rhdf5::h5writeAttribute.character(description, H5Data, "Description" )
 
     #Close everything up before exiting
     rhdf5::H5Dclose( H5Data )
@@ -174,12 +173,14 @@ write_omx <- function(file, matrix, name,
 #'
 #' @return an R matrix object
 #'
+#' @importFrom rhdf5 h5read
+#'
 #' @export
-#' @import rhdf5
+#'
 read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 
   #Get the matrix dimensions specified in the file
-  RootAttr <- get_omx_attr( file )
+  RootAttr <- omxr::get_omx_attr( file )
   Shape <- RootAttr$SHAPE
 
   #Identify the item to be read

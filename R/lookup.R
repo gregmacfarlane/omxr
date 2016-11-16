@@ -94,8 +94,9 @@ write_lookup <- function(file, lookup_v, name,
 #'    \item{\code{lookup_dim}}{String, whether the lookup refers to rows or
 #'      columns. }
 #'  }
+#' @importFrom rhdf5 h5read H5Fopen H5Gopen H5Dopen H5Aexists H5Aopen H5Aread
+#'   H5Aclose H5Dclose H5Gclose H5Fclose
 #' @export
-#' @import rhdf5
 read_lookup <- function( file, name ) {
   #Identify the item to be read
   ItemName <- paste( "lookup", name, sep="/" )
@@ -108,7 +109,7 @@ read_lookup <- function( file, name ) {
   if( rhdf5::H5Aexists( H5Data, "DIM" ) ) {
     H5Attr <- rhdf5::H5Aopen( H5Data, "DIM" )
     Dim <- rhdf5::H5Aread( H5Attr )
-    H5Aclose( H5Attr )
+    rhdf5::H5Aclose( H5Attr )
   } else {
     Dim <- ""
   }
@@ -148,7 +149,6 @@ read_lookup <- function( file, name ) {
 #' @return An R matrix object representing the selected rows and colums.
 #'
 #' @export
-#' @import rhdf5
 read_selected_omx <- function(file, matrix_name,
                               row_selection = NULL, col_selection = NULL,
                               row_labels = NULL, col_labels = NULL) {

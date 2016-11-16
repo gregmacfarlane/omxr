@@ -18,5 +18,8 @@ VignetteBuilder: knitr
 Imports:
     rhdf5,
     tidyr,
-    dplyr
-RoxygenNote: 5.0.1
+    readr,
+    dplyr,
+    magrittr
+RoxygenNote: 5.0.1.9000
+Remotes: Bioconductor-mirror/rhdf5

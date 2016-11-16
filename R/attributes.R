@@ -6,8 +6,9 @@
 #' @param file full path name of the OMX file being read
 #' @return A list containing \code{SHAPE} and \code{VERSION} attributes.
 #'
+#' @importFrom rhdf5 H5Fopen H5Aopen H5Aread H5Aclose H5Fclose
 #' @export
-#' @import rhdf5
+#'
 get_omx_attr <- function( file ) {
 	H5File <- rhdf5::H5Fopen( file )
   H5Attr <- rhdf5::H5Aopen( H5File, "SHAPE" )
@@ -30,12 +31,13 @@ get_omx_attr <- function( file ) {
 #' @param attr_name Name of the attribute.
 #' @param value Attribute value
 #'
-#' @import rhdf5
+#' @importFrom rhdf5 H5Fopen H5Gopen H5Dopen h5writeAttribute H5Dclose H5Gclose
+#'   H5Fclose
 #'
 #' @export
 write_matrix_attr <- function( file, name, attr_name, value) {
     H5File <- rhdf5::H5Fopen(file)
-    H5Group <- rhdf5::rH5Gopen( H5File, "data" )
+    H5Group <- rhdf5::H5Gopen( H5File, "data" )
     H5Data <- rhdf5::H5Dopen( H5Group, name )
     rhdf5::h5writeAttribute(value, H5Data, attr_name)
 
@@ -60,9 +62,11 @@ write_matrix_attr <- function( file, name, attr_name, value) {
 #'   \item{Lookups}{A \code{data.frame} identifying the lookups and their
 #'   attributes.}
 #'  }
+#' @importFrom rhdf5 h5ls H5Fopen H5Gopen H5Dopen H5Aexists H5Aopen H5Aread
+#'   H5Aclose H5Dclose H5Gclose H5Fclose
 #'
 #' @export
-#' @import rhdf5
+#'
 list_omx <- function( file ) {
   #Get the version and shape information
 	RootAttr <- get_omx_attr( file )
@@ -81,13 +85,13 @@ list_omx <- function( file ) {
 
   for( i in 1:length(Names) ) {
 		Attr <- list(type="matrix")
-    H5Data <- H5Dopen( H5Group, Names[i] )
-    if(H5Aexists(H5Data, "NA")) {
+    H5Data <- rhdf5::H5Dopen( H5Group, Names[i] )
+    if(rhdf5::H5Aexists(H5Data, "NA")) {
       H5Attr <- rhdf5::H5Aopen( H5Data, "NA" )
       Attr$navalue <- rhdf5::H5Aread( H5Attr )
       rhdf5::H5Aclose( H5Attr )
     }
-    if(H5Aexists(H5Data, "Description")) {
+    if(rhdf5::H5Aexists(H5Data, "Description")) {
       H5Attr <- rhdf5::H5Aopen( H5Data, "Description" )
       Attr$description <- rhdf5::H5Aread( H5Attr )
       rhdf5::H5Aclose( H5Attr )

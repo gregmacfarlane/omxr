@@ -10,7 +10,7 @@
 #' @export
 #'
 convert_zmx = function(zmx, omx = NULL) {
-  x = read_zmx(zmx)
+  x = omxr::read_zmx(zmx)
 
   # set output file name
   if(is.null(omx)){
