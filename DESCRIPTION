@@ -22,4 +22,4 @@ Imports:
     dplyr,
     magrittr
 RoxygenNote: 5.0.1.9000
-Remotes: Bioconductor-mirror/rhdf5
+Remotes: url::https://bioconductor.org/packages/release/bioc/bin/windows/contrib/3.3/rhdf5_2.18.0.zip
