@@ -15,16 +15,20 @@
 #' @param replace Overwrite the existing lookup (if any)? Defaults to
 #'   \code{FALSE}.
 #' @param description String defining the lookup.
+
+#' @importFrom rhdf5 h5write H5Fopen H5Gopen H5Dopen h5writeAttribute H5Dclose
+#'   H5Gclose H5Fclose
 #'
 #' @export
-#' @import rhdf5
 write_lookup <- function(file, lookup_v, name,
                          lookup_dim = NULL, replace = FALSE, description="" ) {
 
   #Check whether there is lookup of that name already in the file
-  Contents = rhdf5::h5ls(file)
+  H5File <- rhdf5::H5Fopen( file )
+  Contents = rhdf5::h5ls(H5File)
   LookupNames <- Contents$name[ Contents$group == "/lookup" ]
   if((name %in% LookupNames) & !replace){
+    rhdf5::H5Fclose( H5File )
     stop(paste(
       name, "already exists. Set replace = TRUE to overwrite."
     ))
@@ -37,9 +41,11 @@ write_lookup <- function(file, lookup_v, name,
 
   if(is.null(lookup_dim)) {  # no dimension given, meaning two-way lookup
     if( Shape[1] != Shape[2] ) {
+      rhdf5::H5Fclose( H5File )
       stop("Matrix is not square. You must specify the 'lookup_dim'")
     }
     if(Len != Shape[1]) {
+      rhdf5::H5Fclose( H5File )
       stop(paste(
         file, "has", Shape[1], "rows and columns. lookup_v has",
         Len, " positions."
@@ -50,28 +56,31 @@ write_lookup <- function(file, lookup_v, name,
 
     # needs to be either row or col
     if(!(lookup_dim %in% c( "row", "col" ))) {
+      rhdf5::H5Fclose( H5File )
       stop("lookup_dim argument must be 'row', 'col', or NULL.")
     }
 
     # check length
     if(lookup_dim == "row" & Len != Shape[1]){
+      rhdf5::H5Fclose( H5File )
       stop(paste("Length of 'lookup_v' does not match row dimension of", file))
     }
     if(lookup_dim == "col" & Len != Shape[2]){
+      rhdf5::H5Fclose( H5File )
       stop(paste("Length of 'lookup_v' does not match row dimension of", file))
     }
   }
 
   #Write lookup vector to file
   ItemName <- paste( "lookup", name, sep="/" )
-  rhdf5::h5write( lookup_v, file, ItemName )
+  rhdf5::h5writeDataset.logical( lookup_v, H5File, ItemName )
   #Write attributes
-  H5File <- rhdf5::H5Fopen( file )
+
   H5Group <- rhdf5::H5Gopen( H5File, "lookup" )
   H5Data <- rhdf5::H5Dopen( H5Group, name )
-  rhdf5::h5writeAttribute( description, H5Data, "Description" )
+  rhdf5::h5writeAttribute.character( description, H5Data, "Description" )
   if( !is.null( lookup_dim ) ) {
-    rhdf5::h5writeAttribute( lookup_dim, H5Data, "DIM" )
+    rhdf5::h5writeAttribute.character( lookup_dim, H5Data, "DIM" )
   }
 
   #Close everything up before exiting

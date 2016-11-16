@@ -25,8 +25,8 @@ create_omx <- function(file, numrows, numcols, level = 1){
   # create hdf5 file with appropriate shape and attributes
   Shape <- c(numrows, numcols)
   H5File <- rhdf5::H5Fcreate(file)
-  rhdf5::h5writeAttribute(0.2, H5File, "OMX_VERSION")
-  rhdf5::h5writeAttribute(Shape, H5File, "SHAPE")
+  rhdf5::h5writeAttribute.character("0.2", H5File, "OMX_VERSION")
+  rhdf5::h5writeAttribute.array(Shape, H5File, "SHAPE")
   rhdf5::h5createGroup(file,"data")
   rhdf5::h5createGroup(file,"lookup")
   rhdf5::H5Fclose( H5File )
@@ -55,15 +55,18 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #'   be replaced? Defaults to \code{FALSE}.
 #' @param description (Optional) description of matrix contents.
 #'
+#' @importFrom rhdf5 h5ls h5writeAttribute h5createDataset h5writeDataset
+#'   H5Dclose h5write H5Fopen H5Gopen H5Dopen h5writeDataset.write
 #' @export
-#' @import rhdf5
+#'
 write_omx <- function(file, matrix, name,
                       row_index = NULL, col_index = NULL,
                       na_value = -1, replace = FALSE,
                       description = "") {
 
   #Get names of matrices in the file and check if exists
-  Contents <- rhdf5::h5ls(file)
+  H5File <- rhdf5::H5Fopen(file)
+  Contents <- rhdf5::h5ls(H5File)
   MatrixNames <- Contents$name[ Contents$group == "/data" ]
   MatrixExists <- name %in% MatrixNames
 
@@ -154,7 +157,7 @@ write_omx <- function(file, matrix, name,
 
     # Write the matrix to the indexed positions
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5write(matrix, file, ItemName, index=Indices )
+    rhdf5::h5writeDataset.write(matrix, H5File, ItemName, index=Indices )
 
   }
 }

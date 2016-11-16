@@ -28,10 +28,7 @@ attributes. You can create a new container with the `create_omx` command.
 
 ```{r create_omx}
 zones <- 1:10
-create_omx(
-  file = "simple.omx",  
-  numrows = length(zones), numcols = length(zones)
-)
+create_omx( file = "simple.omx", numrows = length(zones), numcols = length(zones))
 ```
 
 Let's start with a 10-zone system with random trips and costs.
