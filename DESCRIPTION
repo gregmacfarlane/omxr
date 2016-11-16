@@ -15,9 +15,10 @@ LazyData: TRUE
 Suggests:
     knitr
 VignetteBuilder: knitr
-biocViews: rhdf5
+biocViews: rhdf5, zlibbioc
 Imports:
     rhdf5,
+    zlibbioc,
     tidyr,
     readr,
     dplyr,
