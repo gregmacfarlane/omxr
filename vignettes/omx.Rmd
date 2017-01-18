@@ -60,13 +60,23 @@ read_omx("simple.omx", "trips")
 read_omx("simple.omx", "cost")
 ```
 
+You can transform a matrix to long format, which is more `tidyverse`
+friendly.
+
+```{r long_matrix()```
+library(tidyverse)
+read_omx("simple.omx", "trips") %>%
+  long_matrix()
+```
+
 You can also read subsets of matrices.
 
 ```{r read_subset}
 read_omx("simple.omx", "trips", row_index = 2:4, col_index = 2:5)
 ```
 
-There are also functions to get the attributes of an OMX file.
+There are also functions to get the attributes of an OMX file. A call to
+`rhdf5::h5ls()` call will show the names of the matrices inside the file.
 
 ```{r attributes}
 get_omx_attr("simple.omx")
