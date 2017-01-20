@@ -63,10 +63,10 @@ read_omx("simple.omx", "cost")
 You can transform a matrix to long format, which is more `tidyverse`
 friendly.
 
-```{r long_matrix()```
+```{r long_matrix(), message=FALSE, warning=FALSE}
 library(tidyverse)
 read_omx("simple.omx", "trips") %>%
-  long_matrix()
+  long_matrix(value = "trips")
 ```
 
 You can also read subsets of matrices.
