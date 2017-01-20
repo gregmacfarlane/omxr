@@ -80,7 +80,7 @@ There are also functions to get the attributes of an OMX file. A call to
 
 ```{r attributes}
 get_omx_attr("simple.omx")
-rhdf5::h5ls("simple.omx")
+list_omx("simple.omx")
 ```
 
 
