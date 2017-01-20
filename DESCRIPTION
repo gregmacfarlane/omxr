@@ -16,7 +16,6 @@ Suggests:
     knitr,
     tidyverse
 VignetteBuilder: knitr
-biocViews: rhdf5, zlibbioc
 Imports:
     rhdf5,
     zlibbioc,
@@ -24,4 +23,5 @@ Imports:
     readr,
     dplyr,
     magrittr
+Remotes: bioc::3.4/rhdf5, 3.4/zlibbioc
 RoxygenNote: 5.0.1.9000
