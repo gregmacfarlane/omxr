@@ -13,7 +13,8 @@ Description: The Open Matrix (OMX) file type is an open specification for
 License: file LICENSE
 LazyData: TRUE
 Suggests:
-    knitr
+    knitr,
+    tidyverse
 VignetteBuilder: knitr
 biocViews: rhdf5, zlibbioc
 Imports:
