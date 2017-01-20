@@ -113,6 +113,8 @@ list_omx <- function( file ) {
   Names <- LookupContents$name
   Types <- LookupContents$dclass
   LookupAttr <- list()
+  rhdf5::H5Gclose(H5Group)
+  rhdf5::H5Fclose(H5File)
 
 	if(length(Names)>0){
 	  for( i in 1:length(Names) ) {
