@@ -22,18 +22,21 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("rhdf5")
 ```
 
+Examples for using the package functions are in the package vignette,
+```r
+vignette("omx")
+```
+
 Beginners
 -----------------
 Run the following on your machine if you are new to R,
-Examples for using the package functions are in the package vignette,
 
-    source("http://bioconductor.org/biocLite.R")
-    biocLite("rhdf5")
-    install_packages("devtools")
-    library(omxr)
-    devtools::install_github("gregmacfarlane/omxr")
 ```r
-vignette("omx")
+source("http://bioconductor.org/biocLite.R")
+biocLite("rhdf5")
+install_packages("devtools")
+devtools::install_github("gregmacfarlane/omxr")
+library(omxr)
 ```
 
 License 
