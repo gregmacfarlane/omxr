@@ -18,10 +18,10 @@ Suggests:
 VignetteBuilder: knitr
 Imports:
     rhdf5,
-    zlibbioc,
     tidyr,
     readr,
     dplyr,
     magrittr
-Remotes: bioc::3.4/rhdf5, 3.4/zlibbioc
+Remotes: bioc::3.4/rhdf5
+  
 RoxygenNote: 5.0.1.9000
