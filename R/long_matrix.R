@@ -7,6 +7,9 @@
 #' @return A \code{data_frame} with row and column ids and matrix values.
 #'
 #' @importFrom magrittr "%>%"
+#' @importFrom dplyr bind_cols tbl_df
+#' @importFrom tidyr gather_
+#' @importFrom readr type_convert
 #'
 #' @export
 #'
@@ -25,6 +28,7 @@ long_matrix <- function(matrix, value = NULL){
   df <- matrix %>% as.data.frame()
   names(df) <- cnames
   dplyr::bind_cols(dplyr::data_frame(origin = rnames), df) %>%
+    dplyr::tbl_df() %>%
 
     # longify
     tidyr::gather_("destination", value, cnames, convert = TRUE) %>%
