@@ -14,15 +14,24 @@ library(omxr)
     
 Note that `omxr` functions import the `rhdf5` v2.5.1+ package from
 [Bioconductor](http://bioconductor.org/packages/release/bioc/html/rhdf5.html),
-which is also not on CRAN. To install this library, 
+which is also not on CRAN. If you do not already have this library installed, run 
+the following on your machine once,
 
 ```r
 source("http://bioconductor.org/biocLite.R")
 biocLite("rhdf5")
 ```
 
+Beginners
+-----------------
+Run the following on your machine if you are new to R,
 Examples for using the package functions are in the package vignette,
 
+    source("http://bioconductor.org/biocLite.R")
+    biocLite("rhdf5")
+    install_packages("devtools")
+    library(omxr)
+    devtools::install_github("gregmacfarlane/omxr")
 ```r
 vignette("omx")
 ```
