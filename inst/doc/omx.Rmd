@@ -21,7 +21,7 @@ library(omxr)
 ```
 
 
-# Create and write
+# Create and write.
 
 `.omx` files are HDF5 containers storing many different matrices and their
 attributes. You can create a new container with the `create_omx` command.
