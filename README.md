@@ -1,6 +1,8 @@
 OMX:  Open Matrix exchange format API for R
 ===
 
+[![Travis-CI Build Status](https://travis-ci.org/gregmacfarlane/omxr.svg?branch=master)](https://travis-ci.org/gregmacfarlane/omxr)
+
 This is a reimplementation of the R API maintained by osPlanning and stored in a
 [GitHub repository](https://github.com/osPlanning/omx/).
 
