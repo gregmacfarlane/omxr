@@ -19,6 +19,7 @@ VignetteBuilder: knitr
 biocViews: rhdf5, zlibbioc
 Imports:
     rhdf5,
+    hms,
     zlibbioc,
     tidyr,
     readr,
