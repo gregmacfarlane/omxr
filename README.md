@@ -34,7 +34,7 @@ Run the following on your machine if you are new to R,
 ```r
 source("http://bioconductor.org/biocLite.R")
 biocLite("rhdf5")
-install_packages("devtools")
+install.packages("devtools")
 devtools::install_github("gregmacfarlane/omxr")
 library(omxr)
 ```
