@@ -24,4 +24,3 @@ This function creates an OMX file, establishes the shape attribute (number
 of rows and columns) and version attribute, and creates the data and lookup
 groups.
 }
-

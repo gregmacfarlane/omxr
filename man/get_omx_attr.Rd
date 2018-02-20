@@ -16,4 +16,3 @@ A list containing \code{SHAPE} and \code{VERSION} attributes.
 This function reads the SHAPE and VERSION attributes of an OMX file. This is
 called by several other functions.
 }
-

@@ -22,4 +22,3 @@ A list of two elements:
 \description{
 This function reads a lookup and its attributes.
 }
-

@@ -30,4 +30,3 @@ specify if the lookup vector applies only to rows or columns (in case the
 matrix is not square and/or the rows and columns don't have the same
 meanings.
 }
-

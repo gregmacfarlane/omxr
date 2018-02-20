@@ -24,4 +24,3 @@ an R matrix object
 This function reads an entire matrix in an OMX file or portions of a matrix
 using indexing.
 }
-

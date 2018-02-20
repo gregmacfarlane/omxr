@@ -35,4 +35,3 @@ portions of an existing matrix. It allows overwriting existing matrix
 values, but only if the "Replace" argument is set to TRUE. If only portions
 of the matrix are to be written to, the full matrix must already exist.
 }
-

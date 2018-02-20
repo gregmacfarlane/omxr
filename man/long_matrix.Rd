@@ -18,4 +18,3 @@ A \code{data_frame} with row and column ids and matrix values.
 \description{
 Transform a matrix into long format
 }
-

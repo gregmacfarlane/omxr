@@ -19,4 +19,3 @@ a new matrix file, see \link{create_omx}.}
 \description{
 Function to write matrix attribute
 }
-

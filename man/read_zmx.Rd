@@ -22,4 +22,3 @@ The ZMX was a PB-designed precursor to OMX. This function is
 \author{
 Ben Stabler, Brian Gregor
 }
-
