@@ -8,14 +8,14 @@
 #'
 #' @importFrom magrittr "%>%"
 #' @importFrom dplyr bind_cols tbl_df
-#' @importFrom tidyr gather_
+#' @importFrom tidyr gather
 #' @importFrom readr type_convert
 #'
 #' @export
 #'
 long_matrix <- function(matrix, value = NULL){
 
-  # set matrix row and column names if the exist
+  # set matrix row and column names if they exist
   names <- dimnames(matrix)
   if(is.null(names[1])){ rnames <- 1:nrow(matrix) } else { rnames <- names[[1]] }
   if(is.null(names[2])){ cnames <- 1:ncol(matrix) } else { cnames <- names[[2]] }
@@ -31,8 +31,7 @@ long_matrix <- function(matrix, value = NULL){
     dplyr::tbl_df() %>%
 
     # longify
-    tidyr::gather_("destination", value, cnames, convert = TRUE) %>%
+    tidyr::gather("destination", !!value, -origin, convert = TRUE) %>%
     readr::type_convert()
-
 
 }
