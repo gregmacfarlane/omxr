@@ -56,7 +56,7 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' @param description (Optional) description of matrix contents.
 #'
 #' @importFrom rhdf5 h5ls h5writeAttribute h5createDataset h5writeDataset
-#'   H5Dclose h5write H5Fopen H5Gopen H5Dopen h5writeDataset.write
+#'   H5Dclose h5write H5Fopen H5Gopen H5Dopen 
 #' @export
 #'
 write_omx <- function(file, matrix, name,
