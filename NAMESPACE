@@ -2,6 +2,7 @@
 
 export(convert_zmx)
 export(create_omx)
+export(gather_matrix)
 export(get_omx_attr)
 export(list_omx)
 export(long_matrix)

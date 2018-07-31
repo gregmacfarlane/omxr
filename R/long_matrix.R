@@ -1,6 +1,6 @@
-#' Transform a matrix into long format
+#' Gather the destinations of a Origin-Destination matrix
 #'
-#' @param matrix An R matrix with row and column names or indices
+#' @param matrix An R matrix with row and column names or indices 
 #' @param value_name A character string identifying the name of the value column in
 #'   the output data_frame
 #'
@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-long_matrix <- function(matrix, value_name = NULL){
+gather_matrix <- function(matrix, value_name = NULL){
   
   # if no value name given, default to "value"
   if(is.null(value_name)) value_name <- "value"
@@ -26,4 +26,15 @@ long_matrix <- function(matrix, value_name = NULL){
     purrr::map_dfc(as.vector) %>%
     dplyr::rename(!!value_name := value)
   
+}
+
+#' Transform a matrix into long format
+#' 
+#' @inheritParams gather_matrix
+#' 
+#' 
+#' @export
+long_matrix <- function(matrix, value_name = NULL){
+  .Deprecated("gather_matrix")
+  gather_matrix(matrix, value_name)
 }
