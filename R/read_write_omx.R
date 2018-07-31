@@ -223,3 +223,24 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 
   Result
 }
+
+
+#' Read all cores of an OMX file into a data frame
+#' 
+#' @param file Path to OMX file
+#' @inheritDotParams read_omx
+#' 
+#' @return A tibble with the matrix cores of the OMX file in columns.
+read_all_omx <- function(file, ...) {
+  
+  # get the list of matrix cores
+  matrix_names <- list_omx(file)[["Matrices"]][["description"]]
+  
+  lapply(matrix_names, function(core){
+    read_omx(file, core, ...) %>%
+      gather_matrix(value_name = core)
+  }) %>%
+    bind_cols() %>%
+    select(origin, destination, !!matrix_names)
+  
+} 
