@@ -229,10 +229,12 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 #' 
 #' @param file Path to OMX file
 #' @inheritDotParams read_omx
+#' @return A tibble with the matrix cores of the OMX file in columns.
 #' 
 #' @importFrom dplyr bind_cols select
 #' 
-#' @return A tibble with the matrix cores of the OMX file in columns.
+#' @export
+#' 
 read_all_omx <- function(file, ...) {
   
   # get the list of matrix cores
