@@ -225,27 +225,33 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 }
 
 
-#' Read all cores of an OMX file into a data frame
+
+
+#' Read all matrix cores from an OMX file
 #' 
 #' @param file Path to OMX file
-#' @inheritDotParams read_omx
-#' @return A tibble with the matrix cores of the OMX file in columns.
+#' @param long If TRUE (default) will return the matrices as a long tidy 
+#'   tibble with the cores as columns. If FALSE will return a list of named
+#'   matrices.
+#'   
+#' @importFrom tidyr spread
+#' @importFrom dplyr bind_rows
 #' 
-#' @importFrom dplyr bind_cols select
-#' 
+#' @return Depending on the value of `long`: if TRUE, a tibble with one core
+#'   per column and one row per interchange; if FALSE, a list of named matrices.
 #' @export
 #' 
-read_all_omx <- function(file, ...) {
+read_all_omx <- function(file, long = TRUE) {
+  core_names <- list_omx(file)[["Matrices"]][["name"]]
   
-  # get the list of matrix cores
-  matrix_names <- list_omx(file)[["Matrices"]][["description"]]
+  matrices <- lapply(core_names, function(name) read_omx(file, name)) %>%
+    setNames(core_names)
   
-  # read, gather, and bind to columns
-  lapply(matrix_names, function(core){
-    read_omx(file, core, ...) %>%
-      gather_matrix(value_name = core)
-  }) %>%
-    dplyr::bind_cols() %>%
-    dplyr::select(origin, destination, !! matrix_names)
+  if (long) {
+    matrices <- lapply(matrices, gather_matrix) %>%
+      dplyr::bind_rows(.id = "matrix") %>%
+      tidyr::spread(matrix, value)
+  }
   
-} 
+  matrices
+}

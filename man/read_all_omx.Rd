@@ -2,26 +2,21 @@
 % Please edit documentation in R/read_write_omx.R
 \name{read_all_omx}
 \alias{read_all_omx}
-\title{Read all cores of an OMX file into a data frame}
+\title{Read all matrix cores from an OMX file}
 \usage{
-read_all_omx(file, ...)
+read_all_omx(file, long = TRUE)
 }
 \arguments{
 \item{file}{Path to OMX file}
 
-\item{...}{Arguments passed on to \code{read_omx}
-\describe{
-  \item{file}{Path name of the OMX file where the matrix resides.}
-  \item{name}{Name of the matrix in the OMX file}
-  \item{row_index}{An integer vector indicating the rows represented by
-\code{matrix}. Defaults to \code{NULL}, meaning that all rows are read
-(and \code{nrow(matrix)} is the number of rows in the matrix).}
-  \item{col_index}{The precise corrolary to \code{row_index}, for columns.}
-}}
+\item{long}{If TRUE (default) will return the matrices as a long tidy 
+tibble with the cores as columns. If FALSE will return a list of named
+matrices.}
 }
 \value{
-A tibble with the matrix cores of the OMX file in columns.
+Depending on the value of `long`: if TRUE, a tibble with one core
+  per column and one row per interchange; if FALSE, a list of named matrices.
 }
 \description{
-Read all cores of an OMX file into a data frame
+Read all matrix cores from an OMX file
 }
