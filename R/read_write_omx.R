@@ -157,7 +157,7 @@ write_omx <- function(file, matrix, name,
 
     # Write the matrix to the indexed positions
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5writeDataset.write(matrix, H5File, ItemName, index=Indices )
+    rhdf5::h5writeDataset(matrix, H5File, ItemName, index=Indices )
 
   }
 }
@@ -222,4 +222,37 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
   }
 
   Result
+}
+
+
+
+
+#' Read all matrix cores from an OMX file
+#' 
+#' @param file Path to OMX file
+#' @param long If TRUE (default) will return the matrices as a long tidy 
+#'   tibble with the cores as columns. If FALSE will return a list of named
+#'   matrices.
+#'   
+#' @importFrom tidyr spread
+#' @importFrom dplyr bind_rows
+#' @importFrom stats setNames
+#' 
+#' @return Depending on the value of `long`: if TRUE, a tibble with one core
+#'   per column and one row per interchange; if FALSE, a list of named matrices.
+#' @export
+#' 
+read_all_omx <- function(file, long = TRUE) {
+  core_names <- list_omx(file)[["Matrices"]][["name"]]
+  
+  matrices <- lapply(core_names, function(name) read_omx(file, name)) %>%
+    stats::setNames(core_names)
+  
+  if (long) {
+    matrices <- lapply(matrices, gather_matrix) %>%
+      dplyr::bind_rows(.id = "matrix") %>%
+      tidyr::spread(matrix, value)
+  }
+  
+  matrices
 }

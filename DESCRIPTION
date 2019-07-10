@@ -1,8 +1,8 @@
 Package: omxr
 Type: Package
 Title: Read and Write Open Matrix Files
-Version: 0.3.0
-Date: 2018-02-20
+Version: 0.3.1
+Date: 2019-7-10
 Authors@R: c(
     person("Brian", "Gregor", email = "", role = "aut"),
     person("Ben", "Stabler", email = "", role = "aut"),
@@ -21,8 +21,10 @@ Imports:
     rhdf5,
     hms,
     zlibbioc,
-    tidyr(>= 0.8.0),
+    tidyr (>= 0.8.0),
     readr,
     dplyr,
-    magrittr
-RoxygenNote: 6.0.1
+    purrr,
+    magrittr,
+    rlang
+RoxygenNote: 6.1.1
