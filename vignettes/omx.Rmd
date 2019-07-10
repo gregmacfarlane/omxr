@@ -67,7 +67,7 @@ friendly.
 ```{r long_matrix(), message=FALSE, warning=FALSE}
 library(tidyverse)
 read_omx("simple.omx", "trips") %>%
-  long_matrix(value = "trips")
+  gather_matrix("trips")
 ```
 
 You can also read subsets of matrices.

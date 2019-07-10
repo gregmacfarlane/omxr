@@ -7,6 +7,7 @@
 #' @return A \code{data_frame} with row and column ids and matrix values.
 #'
 #' @importFrom magrittr "%>%"
+#' @importFrom rlang ":="
 #' @importFrom dplyr rename
 #' @importFrom purrr map_dfc
 #'
