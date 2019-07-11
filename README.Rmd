@@ -1,0 +1,60 @@
+---
+output: github_document
+---
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(omxr)
+```
+# omxr
+[![CRAN status](https://www.r-pkg.org/badges/version/omxr)](https://cran.r-project.org/package=omxr)
+[![Build Status](https://travis-ci.org/gregmacfarlane/omxr.svg?branch=master)](https://travis-ci.org/gregmacfarlane/omxr)
+
+
+The goal of omxr is to provide a convenient API for R users working with 
+Open Matrix (OMX) format files. For more details on the file standard, see
+the [osPlanning wiki](https://github.com/osPlanning/omx/wiki).
+
+## Installation
+
+We hope to have omxr on [CRAN](https://CRAN.R-project.org) in the near future. 
+Until then, you can install omxr with the [devtools](https://cran.r-project.org/web/packages/devtools/index.html) package
+
+``` r
+devtools::install_github("gregmacfarlane/omxr")
+```
+
+## Example
+
+With omxr you can examine the contents of existing OMX files within R.
+```{r example}
+# path to the omx file
+omx_file <- system.file("extdata", "test.omx", package = "omxr")
+
+# list contents
+list_omx(omx_file)
+```
+
+You can choose to read the matrix as either an R matrix or as a tidyverse-friendly 
+tibble, depending on your needs.
+
+```{r read}
+m <- read_omx(omx_file, "test") # return an array
+m[1:5, 1:5]
+
+read_all_omx(omx_file)
+```
+
+More detailed examples, including creating and writing to OMX files, are
+available in the package vignette.
+
+``` r
+vignette(omxr)
+```
+
