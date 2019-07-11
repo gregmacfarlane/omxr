@@ -16,8 +16,7 @@ see the [osPlanning wiki](https://github.com/osPlanning/omx/wiki).
 
 We hope to have omxr on [CRAN](https://CRAN.R-project.org) in the near
 future. Until then, you can install omxr with the
-[devtools](https://cran.r-project.org/web/packages/devtools/index.html)
-package
+[devtools](https://cran.r-project.org/package=devtools) package
 
 ``` r
 devtools::install_github("gregmacfarlane/omxr")
