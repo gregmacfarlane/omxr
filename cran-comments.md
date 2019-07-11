@@ -8,3 +8,4 @@
 0 errors | 0 warnings | 1 note
 
 * This is a new release.
+* OMX project code is released under Apache 2.0
