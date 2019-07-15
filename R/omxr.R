@@ -1,6 +1,10 @@
-#' \code{omxr} package
+#' \code{omxr}: A package for using OMX files in R.
 #' 
-#' API for OMX matrices in R.
+#' The Open Matrix (OMX) file type is an open specification for 
+#' sharing data from transportation models. The specification is built on  
+#' HDF5 \url{https://www.hdfgroup.org/};  
+#' APIs to read and write are available for 'Cube', 'Emme', 'Python', 'Java',  
+#' and 'R'.
 #' 
 #' @docType package
 #' @name omxr
