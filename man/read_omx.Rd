@@ -24,3 +24,10 @@ an R matrix object
 This function reads an entire matrix in an OMX file or portions of a matrix
 using indexing.
 }
+\examples{
+omxfile <- omxr_example("skims.omx")
+mat <- read_omx(omxfile, "DIST")
+str(mat)
+read_omx(omxfile, "DIST", c(1,4,5), c(1,4,5))
+
+}

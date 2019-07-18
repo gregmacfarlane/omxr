@@ -22,3 +22,8 @@ A list of two elements:
 \description{
 This function reads a lookup and its attributes.
 }
+\examples{
+omxfile <- omxr_example("skims.omx")
+read_lookup(omxfile, "EI")
+
+}

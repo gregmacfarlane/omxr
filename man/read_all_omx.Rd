@@ -20,3 +20,8 @@ Depending on the value of `long`: if TRUE, a tibble with one core
 \description{
 Read all matrix cores from an OMX file
 }
+\examples{
+omxfile <- omxr_example("skims.omx")
+read_all_omx(omxfile)
+
+}

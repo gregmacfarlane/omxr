@@ -19,14 +19,14 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "value"))
 
 #' Get path to example file
 #' 
-#' omxr comes bundled with an example omx and zmx file in its `inst/extdata`
+#' omxr comes bundled with an example omx file in its `inst/extdata`
 #' directory. This function makes it easy to access.
 #' 
 #' @param path Name of file. If `NULL`, the example files will be listed.
 #' @export
 #' @examples
 #' omxr_example()
-#' omxr_example("test.omx")
+#' omxr_example("skims.omx")
 omxr_example <- function(path = NULL) {
   if (is.null(path)) {
     dir(system.file("extdata", package = "omxr"))

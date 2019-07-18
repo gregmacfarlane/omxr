@@ -10,10 +10,10 @@ omxr_example(path = NULL)
 \item{path}{Name of file. If `NULL`, the example files will be listed.}
 }
 \description{
-omxr comes bundled with an example omx and zmx file in its `inst/extdata`
+omxr comes bundled with an example omx file in its `inst/extdata`
 directory. This function makes it easy to access.
 }
 \examples{
 omxr_example()
-omxr_example("test.omx")
+omxr_example("skims.omx")
 }

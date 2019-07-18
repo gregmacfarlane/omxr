@@ -8,6 +8,9 @@
 #'
 #' @importFrom rhdf5 H5Fopen H5Aopen H5Aread H5Aclose H5Fclose
 #' @export
+#' @examples 
+#' omxfile <- omxr_example("skims.omx")
+#' get_omx_attr(omxfile)
 #'
 get_omx_attr <- function( file ) {
 	H5File <- rhdf5::H5Fopen( file )
@@ -66,6 +69,9 @@ write_matrix_attr <- function( file, name, attr_name, value) {
 #'   H5Aclose H5Dclose H5Gclose H5Fclose
 #'
 #' @export
+#' @examples
+#' omxfile <- omxr_example("skims.omx")
+#' list_omx(omxfile)
 #'
 list_omx <- function( file ) {
   #Get the version and shape information

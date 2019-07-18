@@ -24,3 +24,8 @@ A list with 5 elements:
 \description{
 List the contents of an OMX file
 }
+\examples{
+omxfile <- omxr_example("skims.omx")
+list_omx(omxfile)
+
+}

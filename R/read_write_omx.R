@@ -179,6 +179,11 @@ write_omx <- function(file, matrix, name,
 #' @importFrom rhdf5 h5read
 #'
 #' @export
+#' @examples
+#' omxfile <- omxr_example("skims.omx")
+#' mat <- read_omx(omxfile, "DIST")
+#' str(mat)
+#' read_omx(omxfile, "DIST", c(1,4,5), c(1,4,5))
 #'
 read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 
@@ -241,6 +246,9 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 #' @return Depending on the value of `long`: if TRUE, a tibble with one core
 #'   per column and one row per interchange; if FALSE, a list of named matrices.
 #' @export
+#' @examples 
+#' omxfile <- omxr_example("skims.omx")
+#' read_all_omx(omxfile)
 #' 
 read_all_omx <- function(file, long = TRUE) {
   core_names <- list_omx(file)[["Matrices"]][["name"]]

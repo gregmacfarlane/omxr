@@ -40,3 +40,10 @@ string values, those values must be single-quoted. Multiple selection
 conditions may be used as argument by including in a vector. Multiple
 selection conditions are treated as intersections.
 }
+\examples{
+omxfile <- omxr_example("skims.omx")
+read_selected_omx(
+  omxfile, "DIST", row_selection = 'EI == "Ext"' 
+)
+
+}

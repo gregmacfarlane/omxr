@@ -15,11 +15,19 @@
 #' @param replace Overwrite the existing lookup (if any)? Defaults to
 #'   \code{FALSE}.
 #' @param description String defining the lookup.
-
+#' 
 #' @importFrom rhdf5 h5write H5Fopen H5Gopen H5Dopen h5writeAttribute H5Dclose
 #'   H5Gclose H5Fclose
 #'
 #' @export
+#' @examples 
+#' \dontrun{
+#' omxfile <- omxr_example("skims.omx")
+#' EI <- c(rep("Int", 21), rep("Ext", 4))
+#' D <-  rep(1:5, each = 5)
+#' write_lookup(omxfile, EI, "EI", description = "External and Internal Zones")
+#' write_lookup(omxfile, D, "Districts", description = "Districts")
+#' }
 write_lookup <- function(file, lookup_v, name,
                          lookup_dim = NULL, replace = FALSE, description="" ) {
 
@@ -106,6 +114,10 @@ write_lookup <- function(file, lookup_v, name,
 #' @importFrom rhdf5 h5read H5Fopen H5Gopen H5Dopen H5Aexists H5Aopen H5Aread
 #'   H5Aclose H5Dclose H5Gclose H5Fclose
 #' @export
+#' @examples
+#' omxfile <- omxr_example("skims.omx")
+#' read_lookup(omxfile, "EI")
+#' 
 read_lookup <- function( file, name ) {
   #Identify the item to be read
   ItemName <- paste( "lookup", name, sep="/" )
@@ -158,6 +170,12 @@ read_lookup <- function( file, name ) {
 #' @return An R matrix object representing the selected rows and colums.
 #'
 #' @export
+#' @examples
+#' omxfile <- omxr_example("skims.omx")
+#' read_selected_omx(
+#'   omxfile, "DIST", row_selection = 'EI == "Ext"' 
+#' )
+#' 
 read_selected_omx <- function(file, matrix_name,
                               row_selection = NULL, col_selection = NULL,
                               row_labels = NULL, col_labels = NULL) {

@@ -30,3 +30,12 @@ specify if the lookup vector applies only to rows or columns (in case the
 matrix is not square and/or the rows and columns don't have the same
 meanings.
 }
+\examples{
+\dontrun{
+omxfile <- omxr_example("skims.omx")
+EI <- c(rep("Int", 21), rep("Ext", 4))
+D <-  rep(1:5, each = 5)
+write_lookup(omxfile, EI, "EI", description = "External and Internal Zones")
+write_lookup(omxfile, D, "Districts", description = "Districts")
+}
+}
