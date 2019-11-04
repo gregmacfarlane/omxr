@@ -29,7 +29,8 @@ attributes. You can create a new container with the `create_omx` command.
 ```{r create_omx, echo=c(1,3)}
 zones <- 1:10
 rhdf5::H5close()
-create_omx( file = "simple.omx", numrows = length(zones), numcols = length(zones))
+omxfile <- tempfile(fileext = ".omx")
+create_omx(omxfile, numrows = length(zones), numcols = length(zones))
 ```
 
 Let's start with a 10-zone system with random trips and costs.
@@ -44,10 +45,10 @@ cost <- matrix(rlnorm(n = length(zones)^2, 1, 1),
 We can store these in the omx container.
 
 ```{r write_omx}
-write_omx(file = "simple.omx", matrix = trips, "trips", 
+write_omx(file = omxfile, matrix = trips, "trips", 
           description = "Total Trips")
 
-write_omx(file = "simple.omx", matrix = cost, "cost", 
+write_omx(file = omxfile, matrix = cost, "cost", 
           description = "Generalized Cost")
 ```
 
@@ -57,8 +58,8 @@ write_omx(file = "simple.omx", matrix = cost, "cost",
 Now that the matrices are in the file, we can try reading them.
 
 ```{r read_matrix}
-read_omx("simple.omx", "trips")
-read_omx("simple.omx", "cost")
+read_omx(omxfile, "trips")
+read_omx(omxfile, "cost")
 ```
 
 You can transform a matrix to long format, which is more `tidyverse`
@@ -66,22 +67,22 @@ friendly.
 
 ```{r long_matrix(), message=FALSE, warning=FALSE}
 library(tidyverse)
-read_omx("simple.omx", "trips") %>%
+read_omx(omxfile, "trips") %>%
   gather_matrix("trips")
 ```
 
 You can also read subsets of matrices.
 
 ```{r read_subset}
-read_omx("simple.omx", "trips", row_index = 2:4, col_index = 2:5)
+read_omx(omxfile, "trips", row_index = 2:4, col_index = 2:5)
 ```
 
 There are also functions to get the attributes of an OMX file. A call to
 `list_omx()` will show the names of the matrices inside the file.
 
 ```{r attributes}
-get_omx_attr("simple.omx")
-list_omx("simple.omx")
+get_omx_attr(omxfile)
+list_omx(omxfile)
 ```
 
 
@@ -95,14 +96,14 @@ row or column should be included, and `FALSE` means otherwise.
 ```{r write_lookup}
 lookup <- zones %in% c(1, 2:5, 9)
 lookup
-write_lookup("simple.omx", lookup_v = lookup, 
+write_lookup(omxfile, lookup_v = lookup, 
              name = "trial", description = "test lookup", replace = TRUE)
 ```
 
 Now we can get the selected rows and columns from either matrix automatically.
 
 ```{r read_lookup}
-read_selected_omx("simple.omx", "trips", 
+read_selected_omx(omxfile, "trips", 
                   row_selection = "trial", col_selection = "trial")
 ```
 
