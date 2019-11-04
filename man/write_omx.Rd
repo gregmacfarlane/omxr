@@ -29,6 +29,9 @@ be replaced? Defaults to \code{FALSE}.}
 
 \item{description}{(Optional) description of matrix contents.}
 }
+\value{
+A return code indicated the success (0) or failure of the write process.
+}
 \description{
 This function writes OMX matrix data. A full matrix can be written or just
 portions of an existing matrix. It allows overwriting existing matrix

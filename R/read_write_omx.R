@@ -55,6 +55,8 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' @param replace If the named object already exists in \code{file}, should it
 #'   be replaced? Defaults to \code{FALSE}.
 #' @param description (Optional) description of matrix contents.
+#' 
+#' @return A return code indicated the success (0) or failure of the write process.
 #'
 #' @importFrom rhdf5 h5ls h5writeAttribute h5createDataset h5writeDataset
 #'   H5Dclose h5write H5Fopen H5Gopen H5Dopen 
@@ -256,7 +258,10 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 #' @export
 #' @examples 
 #' omxfile <- omxr_example("skims.omx")
-#' read_all_omx(omxfile)
+#' read_all_omx(omxfile)[, c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK")]
+#' read_all_omx(omxfile, long = FALSE) [c("DIST", "DISTBIKE", "DISTWALK")]
+#' 
+#'   
 #' 
 read_all_omx <- function(file, long = TRUE) {
   core_names <- list_omx(file)[["Matrices"]][["name"]]
@@ -271,4 +276,65 @@ read_all_omx <- function(file, long = TRUE) {
   }
   
   matrices
+}
+
+
+#' Write all matrix cores to an OMX file
+#' 
+#' @param object The object to be written to OMX. May be either a tibble or 
+#'   a list of named matrices.
+#' @param long Identify whether the object to be written is a long-format 
+#'   `tibble` (the default, `TRUE`) or a list of named matrices.
+#' @param file The location of the OMX file.
+#' 
+#' @return A list with a return code for each matrix element written to OMX. 
+#' 
+#' @export
+#' 
+#' @examples 
+#' omxfile <- omxr_example("skims.omx")
+#' # long-format (tibble)
+#' skims <- read_all_omx(omxfile)[, c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK")]
+#' write_all_omx(skims, file = tempfile(fileext = ".omx"))
+#' 
+#' # list of matrices
+#' skims <- read_all_omx(omxfile, long = FALSE)[c("DIST", "DISTBIKE", "DISTWALK")]
+#' write_all_omx(skims, long = FALSE, file = tempfile(fileext = ".omx"))
+#' 
+#' @importFrom dplyr select
+#' @importFrom tidyr spread
+#' 
+#' 
+write_all_omx <- function(object, long = TRUE, file) {
+  
+  # get matrix parameters to create a new omx file
+  if(long) {   # Tibble input
+    numrows <- length(unique(object[["origin"]]))
+    numcols <- length(unique(object[["destination"]]))
+    core_names <- colnames(object)[!(colnames(object) %in% c("origin", "destination"))]
+    
+  } else {     # Matrix list input
+    numrows <- nrow(object[[1]])
+    numcols <- ncol(object[[1]])
+    core_names <- names(object)
+  }
+  
+  # create the omx file
+  create_omx( file, numrows = numrows, numcols = numcols)
+  
+  # write matrix information to OMX.
+  if (long) { # Tibble input
+    lapply(core_names, function(table_name) {
+      object %>%
+        dplyr::select(origin, destination, !!table_name ) %>%
+        tidyr::spread(destination, !!table_name) %>%
+        dplyr::select(-origin) %>% as.matrix() %>%
+        write_omx(file = file, matrix = ., table_name)
+    })
+  } else {     # Matrix list input
+    lapply(core_names, function(table_name){ 
+      write_omx(file = file, matrix = object[[table_name]], name = table_name)
+    })
+  }
+  
 }

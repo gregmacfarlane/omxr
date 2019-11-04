@@ -22,6 +22,9 @@ Read all matrix cores from an OMX file
 }
 \examples{
 omxfile <- omxr_example("skims.omx")
-read_all_omx(omxfile)
+read_all_omx(omxfile)[, c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK")]
+read_all_omx(omxfile, long = FALSE) [c("DIST", "DISTBIKE", "DISTWALK")]
+
+  
 
 }
