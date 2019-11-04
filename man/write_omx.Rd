@@ -35,3 +35,11 @@ portions of an existing matrix. It allows overwriting existing matrix
 values, but only if the "Replace" argument is set to TRUE. If only portions
 of the matrix are to be written to, the full matrix must already exist.
 }
+\examples{
+omxfile <- tempfile(fileext = ".omx")
+create_omx(omxfile, 10, 10)
+trips <- matrix(rnorm(n = 10^2, 200, 50),   
+                nrow = 10, ncol = 10)
+write_omx(omxfile, matrix = trips, "trips",  description = "Total Trips")
+
+}

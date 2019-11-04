@@ -15,6 +15,7 @@
 #' @importFrom rhdf5 h5writeAttribute h5createGroup H5Fclose H5Gclose H5Fclose
 #'
 #' @export
+#' 
 create_omx <- function(file, numrows, numcols, level = 1){
 
   # if file already exists, delete it
@@ -58,6 +59,13 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' @importFrom rhdf5 h5ls h5writeAttribute h5createDataset h5writeDataset
 #'   H5Dclose h5write H5Fopen H5Gopen H5Dopen 
 #' @export
+#' 
+#' @examples 
+#' omxfile <- tempfile(fileext = ".omx")
+#' create_omx(omxfile, 10, 10)
+#' trips <- matrix(rnorm(n = 10^2, 200, 50),   
+#'                 nrow = 10, ncol = 10)
+#' write_omx(omxfile, matrix = trips, "trips",  description = "Total Trips")
 #'
 write_omx <- function(file, matrix, name,
                       row_index = NULL, col_index = NULL,

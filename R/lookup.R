@@ -21,13 +21,14 @@
 #'
 #' @export
 #' @examples 
-#' \dontrun{
-#' omxfile <- omxr_example("skims.omx")
+#' # create a test file
+#' omxfile <- tempfile(fileext = ".omx")
+#' create_omx(omxfile, 25, 25)
 #' EI <- c(rep("Int", 21), rep("Ext", 4))
 #' D <-  rep(1:5, each = 5)
 #' write_lookup(omxfile, EI, "EI", description = "External and Internal Zones")
 #' write_lookup(omxfile, D, "Districts", description = "Districts")
-#' }
+#' 
 write_lookup <- function(file, lookup_v, name,
                          lookup_dim = NULL, replace = FALSE, description="" ) {
 
