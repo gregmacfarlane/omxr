@@ -1,8 +1,8 @@
 Package: omxr
 Type: Package
 Title: Read and Write Open Matrix Files
-Version: 0.3.1
-Date: 2019-7-10
+Version: 0.3.2
+Date: 2019-11-8
 Authors@R: c(
     person("Brian", "Gregor", email = "", role = "aut"),
     person("Ben", "Stabler", email = "", role = "aut"),
