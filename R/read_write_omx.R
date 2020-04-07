@@ -67,9 +67,9 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #' create_omx(omxfile, 10, 10)
 #' trips <- matrix(rnorm(n = 10^2, 200, 50),   
 #'                 nrow = 10, ncol = 10)
-#' write_omx(omxfile, matrix = trips, "trips",  description = "Total Trips")
+#' write_omx(matrix = trips, omxfile, "trips",  description = "Total Trips")
 #'
-write_omx <- function(file, matrix, name,
+write_omx <- function(matrix, file,  name,
                       row_index = NULL, col_index = NULL,
                       na_value = -1, replace = FALSE,
                       description = "") {
@@ -299,13 +299,13 @@ read_all_omx <- function(file, long = TRUE) {
 #' 
 #' # list of matrices
 #' skims <- read_all_omx(omxfile, long = FALSE)[c("DIST", "DISTBIKE", "DISTWALK")]
-#' write_all_omx(skims, long = FALSE, file = tempfile(fileext = ".omx"))
+#' write_all_omx(skims, file = tempfile(fileext = ".omx"), long = FALSE)
 #' 
 #' @importFrom dplyr select
 #' @importFrom tidyr spread
 #' 
 #' 
-write_all_omx <- function(object, long = TRUE, file) {
+write_all_omx <- function(object, file, long = TRUE) {
   
   # get matrix parameters to create a new omx file
   if(long) {   # Tibble input
@@ -333,7 +333,7 @@ write_all_omx <- function(object, long = TRUE, file) {
     })
   } else {     # Matrix list input
     lapply(core_names, function(table_name){ 
-      write_omx(file = file, matrix = object[[table_name]], name = table_name)
+      write_omx(matrix = object[[table_name]], file = file, name = table_name)
     })
   }
   

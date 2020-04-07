@@ -4,16 +4,16 @@
 \alias{write_all_omx}
 \title{Write all matrix cores to an OMX file}
 \usage{
-write_all_omx(object, long = TRUE, file)
+write_all_omx(object, file, long = TRUE)
 }
 \arguments{
 \item{object}{The object to be written to OMX. May be either a tibble or 
 a list of named matrices.}
 
+\item{file}{The location of the OMX file.}
+
 \item{long}{Identify whether the object to be written is a long-format 
 `tibble` (the default, `TRUE`) or a list of named matrices.}
-
-\item{file}{The location of the OMX file.}
 }
 \value{
 A list with a return code for each matrix element written to OMX.
@@ -29,6 +29,6 @@ write_all_omx(skims, file = tempfile(fileext = ".omx"))
 
 # list of matrices
 skims <- read_all_omx(omxfile, long = FALSE)[c("DIST", "DISTBIKE", "DISTWALK")]
-write_all_omx(skims, long = FALSE, file = tempfile(fileext = ".omx"))
+write_all_omx(skims, file = tempfile(fileext = ".omx"), long = FALSE)
 
 }

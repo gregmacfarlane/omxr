@@ -4,14 +4,14 @@
 \alias{write_omx}
 \title{Function to write OMX matrix data}
 \usage{
-write_omx(file, matrix, name, row_index = NULL, col_index = NULL,
+write_omx(matrix, file, name, row_index = NULL, col_index = NULL,
   na_value = -1, replace = FALSE, description = "")
 }
 \arguments{
+\item{matrix}{Matrix object to be stored.}
+
 \item{file}{Full path name of the OMX file to store the matrix in. If this is
 a new matrix file, see \link{create_omx}.}
-
-\item{matrix}{Matrix object to be stored.}
 
 \item{name}{Name of the matrix in the OMX object.}
 
@@ -43,6 +43,6 @@ omxfile <- tempfile(fileext = ".omx")
 create_omx(omxfile, 10, 10)
 trips <- matrix(rnorm(n = 10^2, 200, 50),   
                 nrow = 10, ncol = 10)
-write_omx(omxfile, matrix = trips, "trips",  description = "Total Trips")
+write_omx(matrix = trips, omxfile, "trips",  description = "Total Trips")
 
 }
