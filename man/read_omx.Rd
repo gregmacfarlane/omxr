@@ -18,7 +18,7 @@ read_omx(file, name, row_index = NULL, col_index = NULL)
 \item{col_index}{The precise corrolary to \code{row_index}, for columns.}
 }
 \value{
-an R matrix object
+An R matrix object containing the named data from the OMX file
 }
 \description{
 This function reads an entire matrix in an OMX file or portions of a matrix

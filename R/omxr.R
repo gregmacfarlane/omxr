@@ -23,8 +23,11 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "value", "origin", 
 #' directory. This function makes it easy to access.
 #' 
 #' @param path Name of file. If `NULL`, the example files will be listed.
+#' @return The path to the package example file
+#' 
 #' @export
 #' @examples
+#'
 #' omxr_example()
 #' omxr_example("skims.omx")
 omxr_example <- function(path = NULL) {

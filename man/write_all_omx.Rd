@@ -16,7 +16,7 @@ a list of named matrices.}
 `tibble` (the default, `TRUE`) or a list of named matrices.}
 }
 \value{
-A list with a return code for each matrix element written to OMX.
+None
 }
 \description{
 Write all matrix cores to an OMX file

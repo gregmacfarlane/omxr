@@ -4,8 +4,14 @@
 \alias{read_selected_omx}
 \title{Read a OMX matrix based on a lookup vector}
 \usage{
-read_selected_omx(file, matrix_name, row_selection = NULL,
-  col_selection = NULL, row_labels = NULL, col_labels = NULL)
+read_selected_omx(
+  file,
+  matrix_name,
+  row_selection = NULL,
+  col_selection = NULL,
+  row_labels = NULL,
+  col_labels = NULL
+)
 }
 \arguments{
 \item{file}{Path name of the OMX file where the lookup resides.}

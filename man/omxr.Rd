@@ -3,7 +3,6 @@
 \docType{package}
 \name{omxr}
 \alias{omxr}
-\alias{omxr-package}
 \title{\code{omxr}: A package for using OMX files in R.}
 \description{
 The Open Matrix (OMX) file type is an open specification for 

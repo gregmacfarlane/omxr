@@ -10,7 +10,7 @@
 #'    Defaults to \code{numrows}.
 #' @param level Compression level. Default \code{1}.
 #'
-#' @return An active connection to \code{file}
+#' @return None
 #'
 #' @importFrom rhdf5 h5writeAttribute h5createGroup H5Fclose H5Gclose H5Fclose
 #'
@@ -56,7 +56,7 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #'   be replaced? Defaults to \code{FALSE}.
 #' @param description (Optional) description of matrix contents.
 #' 
-#' @return A return code indicated the success (0) or failure of the write process.
+#' @return None
 #'
 #' @importFrom rhdf5 h5ls h5writeAttribute h5createDataset h5writeDataset
 #'   H5Dclose h5write H5Fopen H5Gopen H5Dopen 
@@ -184,7 +184,7 @@ write_omx <- function(matrix, file,  name,
 #'   (and \code{nrow(matrix)} is the number of rows in the matrix).
 #' @param col_index The precise corrolary to \code{row_index}, for columns.
 #'
-#' @return an R matrix object
+#' @return An R matrix object containing the named data from the OMX file
 #'
 #' @importFrom rhdf5 h5read
 #'
@@ -292,7 +292,7 @@ read_all_omx <- function(file, names = NULL, long = TRUE) {
 #'   `tibble` (the default, `TRUE`) or a list of named matrices.
 #' @param file The location of the OMX file.
 #' 
-#' @return A list with a return code for each matrix element written to OMX. 
+#' @return None
 #' 
 #' @export
 #' 

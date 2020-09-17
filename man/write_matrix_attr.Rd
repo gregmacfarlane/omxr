@@ -16,6 +16,9 @@ a new matrix file, see \link{create_omx}.}
 
 \item{value}{Attribute value}
 }
+\value{
+None
+}
 \description{
 Function to write matrix attribute
 }

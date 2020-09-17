@@ -51,6 +51,8 @@ get_omx_attr <- function( file ) {
 #' @param name Name of the matrix in the OMX object.
 #' @param attr_name Name of the attribute.
 #' @param value Attribute value
+#' 
+#' @return None
 #'
 #' @importFrom rhdf5 H5Fopen H5Gopen H5Dopen h5writeAttribute H5Dclose H5Gclose
 #'   H5Fclose

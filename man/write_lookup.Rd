@@ -4,8 +4,14 @@
 \alias{write_lookup}
 \title{Function to write a lookup vector to an OMX file}
 \usage{
-write_lookup(file, lookup_v, name, lookup_dim = NULL, replace = FALSE,
-  description = "")
+write_lookup(
+  file,
+  lookup_v,
+  name,
+  lookup_dim = NULL,
+  replace = FALSE,
+  description = ""
+)
 }
 \arguments{
 \item{file}{Full path name of the OMX file to store the lookup.}
@@ -23,6 +29,9 @@ two-dimensional. Defaults to \code{NULL}.}
 \code{FALSE}.}
 
 \item{description}{String defining the lookup.}
+}
+\value{
+None
 }
 \description{
 This function writes a lookup vector to the file. It allows the user to

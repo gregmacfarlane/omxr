@@ -13,7 +13,7 @@ gather_matrix(matrix, value_name = NULL)
 the output data_frame}
 }
 \value{
-A \code{data_frame} with row and column ids and matrix values.
+A \code{tibble} with row and column ids and matrix values.
 }
 \description{
 Gather the destinations of a Origin-Destination matrix

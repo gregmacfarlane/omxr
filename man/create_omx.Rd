@@ -17,7 +17,7 @@ Defaults to \code{numrows}.}
 \item{level}{Compression level. Default \code{1}.}
 }
 \value{
-An active connection to \code{file}
+None
 }
 \description{
 This function creates an OMX file, establishes the shape attribute (number

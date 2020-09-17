@@ -4,8 +4,16 @@
 \alias{write_omx}
 \title{Function to write OMX matrix data}
 \usage{
-write_omx(matrix, file, name, row_index = NULL, col_index = NULL,
-  na_value = -1, replace = FALSE, description = "")
+write_omx(
+  matrix,
+  file,
+  name,
+  row_index = NULL,
+  col_index = NULL,
+  na_value = -1,
+  replace = FALSE,
+  description = ""
+)
 }
 \arguments{
 \item{matrix}{Matrix object to be stored.}
@@ -30,7 +38,7 @@ be replaced? Defaults to \code{FALSE}.}
 \item{description}{(Optional) description of matrix contents.}
 }
 \value{
-A return code indicated the success (0) or failure of the write process.
+None
 }
 \description{
 This function writes OMX matrix data. A full matrix can be written or just

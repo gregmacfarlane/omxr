@@ -18,6 +18,8 @@
 #' 
 #' @importFrom rhdf5 h5write H5Fopen H5Gopen H5Dopen h5writeAttribute H5Dclose
 #'   H5Gclose H5Fclose
+#'   
+#' @return None
 #'
 #' @export
 #' @examples 

@@ -9,11 +9,15 @@ omxr_example(path = NULL)
 \arguments{
 \item{path}{Name of file. If `NULL`, the example files will be listed.}
 }
+\value{
+The path to the package example file
+}
 \description{
 omxr comes bundled with an example omx file in its `inst/extdata`
 directory. This function makes it easy to access.
 }
 \examples{
+
 omxr_example()
 omxr_example("skims.omx")
 }

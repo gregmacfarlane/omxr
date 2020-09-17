@@ -4,7 +4,7 @@
 #' @param value_name A character string identifying the name of the value column in
 #'   the output data_frame
 #'
-#' @return A \code{data_frame} with row and column ids and matrix values.
+#' @return A \code{tibble} with row and column ids and matrix values.
 #'
 #' @importFrom magrittr "%>%"
 #' @importFrom rlang ":="
@@ -32,7 +32,6 @@ gather_matrix <- function(matrix, value_name = NULL){
 #' Transform a matrix into long format
 #' 
 #' @inheritParams gather_matrix
-#' 
 #' 
 #' @export
 long_matrix <- function(matrix, value_name = NULL){
