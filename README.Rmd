@@ -35,7 +35,7 @@ devtools::install_github("gregmacfarlane/omxr")
 With omxr you can examine the contents of existing OMX files within R.
 ```{r example}
 # path to the omx file
-omx_file <- system.file("extdata", "test.omx", package = "omxr")
+omx_file <- omxr_example("skims.omx")
 
 # list contents
 list_omx(omx_file)
@@ -45,10 +45,10 @@ You can choose to read the matrix as either an R matrix or as a tidyverse-friend
 tibble, depending on your needs.
 
 ```{r read}
-m <- read_omx(omx_file, "test") # return an array
+m <- read_omx(omx_file, "DIST") # return an array
 m[1:5, 1:5]
 
-read_all_omx(omx_file)
+read_all_omx(omx_file, c("DIST", "DISTBIKE", "DISTWALK"))
 ```
 
 More detailed examples, including creating and writing to OMX files, are
