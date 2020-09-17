@@ -22,20 +22,18 @@ get_omx_attr <- function( file ) {
 	  RootAttr$SHAPE <- rhdf5::H5Aread( H5Attr )
 	  rhdf5::H5Aclose( H5Attr )
 	}, 
-	error = function(e) e, 
-	finally = {
+	error = function(e) {
 	  warning("Unable to get shape attribute from OMX file")
 	  RootAttr$SHAPE <- NA
 	})
-    
+	  
 	# try to get the OMX version
 	tryCatch({
     H5Attr <- rhdf5::H5Aopen( H5File, "OMX_VERSION" )
     RootAttr$VERSION <- rhdf5::H5Aread( H5Attr )
     rhdf5::H5Aclose( H5Attr )
 	}, 
-	error = function(e) e, 
-	finally = {
+	error = function(e) {
 	  warning("Unable to get version attribute from OMX file")
 	  RootAttr$VERSION <- NA
 	})
