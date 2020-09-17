@@ -56,7 +56,7 @@ create_omx <- function(file, numrows, numcols, level = 1){
 #'   be replaced? Defaults to \code{FALSE}.
 #' @param description (Optional) description of matrix contents.
 #' 
-#' @return None
+#' @return Write function return code; 0 if successful.
 #'
 #' @importFrom rhdf5 h5ls h5writeAttribute h5createDataset h5writeDataset
 #'   H5Dclose h5write H5Fopen H5Gopen H5Dopen 
@@ -259,8 +259,8 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 #' @export
 #' @examples 
 #' omxfile <- omxr_example("skims.omx")
-#' read_all_omx(omxfile)[, c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK")]
-#' read_all_omx(omxfile, long = FALSE) [c("DIST", "DISTBIKE", "DISTWALK")]
+#' read_all_omx(omxfile, names = c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK"))
+#' read_all_omx(omxfile, names = c("DIST", "DISTBIKE", "DISTWALK"), long = FALSE)
 #' 
 #'   
 #' 
@@ -292,18 +292,18 @@ read_all_omx <- function(file, names = NULL, long = TRUE) {
 #'   `tibble` (the default, `TRUE`) or a list of named matrices.
 #' @param file The location of the OMX file.
 #' 
-#' @return None
+#' @return List of write function return codes; 0 if successful.
 #' 
 #' @export
 #' 
 #' @examples 
 #' omxfile <- omxr_example("skims.omx")
 #' # long-format (tibble)
-#' skims <- read_all_omx(omxfile)[, c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK")]
+#' skims <- read_all_omx(omxfile, names = c("DIST", "DISTBIKE", "DISTWALK"))
 #' write_all_omx(skims, file = tempfile(fileext = ".omx"))
 #' 
 #' # list of matrices
-#' skims <- read_all_omx(omxfile, long = FALSE)[c("DIST", "DISTBIKE", "DISTWALK")]
+#' skims <- read_all_omx(omxfile, names = c("DIST", "DISTBIKE", "DISTWALK"), long = FALSE)
 #' write_all_omx(skims, file = tempfile(fileext = ".omx"), long = FALSE)
 #' 
 #' @importFrom dplyr select

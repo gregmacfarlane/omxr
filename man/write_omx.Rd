@@ -38,7 +38,7 @@ be replaced? Defaults to \code{FALSE}.}
 \item{description}{(Optional) description of matrix contents.}
 }
 \value{
-None
+Write function return code; 0 if successful.
 }
 \description{
 This function writes OMX matrix data. A full matrix can be written or just

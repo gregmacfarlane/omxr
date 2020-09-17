@@ -16,7 +16,7 @@ a list of named matrices.}
 `tibble` (the default, `TRUE`) or a list of named matrices.}
 }
 \value{
-None
+List of write function return codes; 0 if successful.
 }
 \description{
 Write all matrix cores to an OMX file
@@ -24,11 +24,11 @@ Write all matrix cores to an OMX file
 \examples{
 omxfile <- omxr_example("skims.omx")
 # long-format (tibble)
-skims <- read_all_omx(omxfile)[, c("origin", "destination", "DIST", "DISTBIKE", "DISTWALK")]
+skims <- read_all_omx(omxfile, names = c("DIST", "DISTBIKE", "DISTWALK"))
 write_all_omx(skims, file = tempfile(fileext = ".omx"))
 
 # list of matrices
-skims <- read_all_omx(omxfile, long = FALSE)[c("DIST", "DISTBIKE", "DISTWALK")]
+skims <- read_all_omx(omxfile, names = c("DIST", "DISTBIKE", "DISTWALK"), long = FALSE)
 write_all_omx(skims, file = tempfile(fileext = ".omx"), long = FALSE)
 
 }
