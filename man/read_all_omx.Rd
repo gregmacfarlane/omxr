@@ -4,10 +4,12 @@
 \alias{read_all_omx}
 \title{Read all matrix cores from an OMX file}
 \usage{
-read_all_omx(file, long = TRUE)
+read_all_omx(file, names = NULL, long = TRUE)
 }
 \arguments{
 \item{file}{Path to OMX file}
+
+\item{names}{A character vector of matrices to read. If blank, will read all.}
 
 \item{long}{If TRUE (default) will return the matrices as a long tidy 
 tibble with the cores as columns. If FALSE will return a list of named

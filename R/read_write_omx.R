@@ -245,6 +245,7 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 #' Read all matrix cores from an OMX file
 #' 
 #' @param file Path to OMX file
+#' @param names A character vector of matrices to read. If blank, will read all.
 #' @param long If TRUE (default) will return the matrices as a long tidy 
 #'   tibble with the cores as columns. If FALSE will return a list of named
 #'   matrices.
@@ -263,8 +264,12 @@ read_omx <- function(file, name, row_index = NULL, col_index = NULL){
 #' 
 #'   
 #' 
-read_all_omx <- function(file, long = TRUE) {
+read_all_omx <- function(file, names = NULL, long = TRUE) {
   core_names <- list_omx(file)[["Matrices"]][["name"]]
+  
+  if(!is.null(names)){
+    core_names <- core_names[which(core_names %in% names)]
+  }
   
   matrices <- lapply(core_names, function(name) read_omx(file, name)) %>%
     stats::setNames(core_names)
