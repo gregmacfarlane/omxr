@@ -26,8 +26,8 @@ create_omx <- function(file, numrows, numcols, level = 1){
   # create hdf5 file with appropriate shape and attributes
   Shape <- c(numrows, numcols)
   H5File <- rhdf5::H5Fcreate(file)
-  rhdf5::h5writeAttribute.character("0.2", H5File, "OMX_VERSION")
-  rhdf5::h5writeAttribute.array(Shape, H5File, "SHAPE")
+  rhdf5::h5writeAttribute("0.2", H5File, "OMX_VERSION")
+  rhdf5::h5writeAttribute(Shape, H5File, "SHAPE")
   rhdf5::h5createGroup(file,"data")
   rhdf5::h5createGroup(file,"lookup")
   rhdf5::H5Fclose( H5File )
@@ -112,22 +112,38 @@ write_omx <- function(matrix, file,  name,
     }
 
     #Transpose matrix and convert NA to designated storage value
-    matrix <- t( matrix )
+    # From hdf5 docs: The dimensions of the array as they will appear in the
+    # file. Note, the dimensions will appear in inverted order when viewing the
+    # file with a C-programm (e.g. HDFView), because the fastest changing
+    # dimension in R is the first one, whereas the fastest changing dimension in
+    # C is the last one.
+    matrix <- t( matrix ) 
     matrix[ is.na( matrix ) ] <- na_value
+    
+    matrix_type <- if(is.character(matrix)) {
+      "character"
+    } else if(is.double(matrix)) {
+      "double"
+    } else if(is.integer(matrix)){
+      "integer"
+    }
 
     #Write matrix to file, set chunking and compression
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5createDataset(H5File, matrix, ItemName,
-      dim(matrix), chunk=c(nrow(matrix), 1),
+    rhdf5::h5createDataset(
+      file = H5File, dataset = ItemName, 
+      storage.mode = matrix_type,
+      dims =  dim(matrix), 
+      chunk=c(nrow(matrix), 1),
       level=7
     )
-    rhdf5::h5writeDataset.matrix(matrix, H5File, ItemName)
+    rhdf5::h5write(matrix, H5File, ItemName)
 
     #Add the NA storage value and matrix descriptions as attributes to the matrix
     H5Group <- rhdf5::H5Gopen( H5File, "data" )
     H5Data <- rhdf5::H5Dopen( H5Group, name )
-    rhdf5::h5writeAttribute.double(na_value, H5Data, "NA" )
-    rhdf5::h5writeAttribute.character(description, H5Data, "Description" )
+    rhdf5::h5writeAttribute(na_value, H5Data, "NA" )
+    rhdf5::h5writeAttribute(description, H5Data, "Description" )
 
     #Close everything up before exiting
     rhdf5::H5Dclose( H5Data )
@@ -167,7 +183,7 @@ write_omx <- function(matrix, file,  name,
 
     # Write the matrix to the indexed positions
     ItemName <- paste( "data", name, sep="/" )
-    rhdf5::h5writeDataset(matrix, H5File, ItemName, index=Indices )
+    rhdf5::h5write(matrix, H5File, ItemName, index=Indices )
 
   }
 }

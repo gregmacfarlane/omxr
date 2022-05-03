@@ -1,7 +1,7 @@
 Package: omxr
 Type: Package
 Title: Read and Write Open Matrix Files
-Version: 0.3.3
+Version: 0.4.0
 Date: 2020-09-16
 Authors@R: c(
     person("Brian", "Gregor", email = "", role = "aut"),
@@ -20,11 +20,8 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: rhdf5, zlibbioc
 Imports:
-    rhdf5,
-    hms,
-    zlibbioc,
+    rhdf5 (>= 2.4.0),
     tidyr (>= 0.8.0),
-    readr,
     dplyr,
     purrr,
     magrittr,
